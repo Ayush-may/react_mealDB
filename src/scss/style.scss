@@ -25,6 +25,8 @@ html {
 
 .scroll {
   width: 100%;
+  height: 100%;
+  position: relative;
 
   img {
     z-index: 0;
@@ -33,6 +35,7 @@ html {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center center;
     box-shadow: inset 0 0 5px lightblue;
   }
 }
@@ -45,4 +48,18 @@ html {
   top: 100%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.catergory_area {
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    white 5%,
+    white 95%,
+    transparent
+  );
+  scrollbar-width: 0;
+  &::-webkit-scrollbar-thumb {
+    display: none;
+  }
 }

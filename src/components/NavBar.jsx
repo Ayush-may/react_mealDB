@@ -12,7 +12,7 @@ const NavBar = () => {
           </div>
           <div className="nav_items">
             <Link to="https://www.themealdb.com/api.php">
-              <button className="bg-black text-white px-4 py-1 rounded">
+              <button className="bg-slate-800 text-white px-4 py-1 rounded">
                 API
               </button>
             </Link>
