@@ -1,3 +1,5 @@
+import { json } from "react-router";
+
 class API {
   constructor() {}
 
@@ -20,6 +22,27 @@ class API {
       a.push(meals[i].strMeal);
     }
     return a;
+  }
+
+  async getMeal(state, limit) {
+    const data = await fetch(
+      "https://www.themealdb.com/api/json/v1/1/search.php?s"
+    );
+    const jsonData = await data.json();
+    const { meals } = jsonData;
+    const tempMeal = [];
+    for (let i = state; i < state + limit; i++) {
+      tempMeal.push(meals[i]);
+    }
+    return tempMeal;
+  }
+
+  async getMealPagination() {
+    const data = await fetch(
+      "https://www.themealdb.com/api/json/v1/1/search.php?s"
+    );
+    const jsonData = await data.json();
+    const { meals } = jsonData;
   }
 }
 
