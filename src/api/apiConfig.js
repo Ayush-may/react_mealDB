@@ -37,12 +37,17 @@ class API {
     return tempMeal;
   }
 
-  async getMealPagination() {
+  async getMealPagination(length, state, limit) {
     const data = await fetch(
       "https://www.themealdb.com/api/json/v1/1/search.php?s"
     );
     const jsonData = await data.json();
     const { meals } = jsonData;
+    const tempMeal = [];
+    for (let i = length; i < length + limit; i++) {
+      if (i < meals.length) tempMeal.push(meals[i]);
+    }
+    return tempMeal;
   }
 }
 
