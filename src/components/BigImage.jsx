@@ -24,16 +24,7 @@ const BigImage = () => {
   const autoSuggest = () => {
     if (suggestion) {
       return (
-        <div
-          className="absolute w-full h-auto bg-slate-100 overflow-hidden rounded-lg shadow-md mt-3 top-full"
-          // onClick={() => {
-          //   console.log("im here");
-          //   if (value !== "" && suggestion.length > 0) {
-          //     setValue("");
-          //     setSuggestion([]);
-          //   }
-          // }}
-        >
+        <div className="absolute w-full h-auto bg-slate-100 overflow-hidden rounded-lg shadow-md mt-3 top-full">
           <ul className="flex flex-col">
             {suggestion.map((e) => (
               <li
