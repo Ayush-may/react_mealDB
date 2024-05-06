@@ -1,54 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
-const sample = [
-  {
-    idCategory: "1",
-    strCategory: "Beef",
-    strCategoryThumb: "https://www.themealdb.com/images/category/beef.png",
-    strCategoryDescription:
-      "Beef is the culinary name for meat from cattle, particularly skeletal muscle. Humans have been eating beef since prehistoric times.[1] Beef is a source of high-quality protein and essential nutrients.[2]",
-  },
-  {
-    idCategory: "1",
-    strCategory: "Beef",
-    strCategoryThumb: "https://www.themealdb.com/images/category/beef.png",
-    strCategoryDescription:
-      "Beef is the culinary name for meat from cattle, particularly skeletal muscle. Humans have been eating beef since prehistoric times.[1] Beef is a source of high-quality protein and essential nutrients.[2]",
-  },
-  {
-    idCategory: "1",
-    strCategory: "Beef",
-    strCategoryThumb: "https://www.themealdb.com/images/category/beef.png",
-    strCategoryDescription:
-      "Beef is the culinary name for meat from cattle, particularly skeletal muscle. Humans have been eating beef since prehistoric times.[1] Beef is a source of high-quality protein and essential nutrients.[2]",
-  },
-  {
-    idCategory: "1",
-    strCategory: "Beef",
-    strCategoryThumb: "https://www.themealdb.com/images/category/beef.png",
-    strCategoryDescription:
-      "Beef is the culinary name for meat from cattle, particularly skeletal muscle. Humans have been eating beef since prehistoric times.[1] Beef is a source of high-quality protein and essential nutrients.[2]",
-  },
-  {
-    idCategory: "1",
-    strCategory: "Beef",
-    strCategoryThumb: "https://www.themealdb.com/images/category/beef.png",
-    strCategoryDescription:
-      "Beef is the culinary name for meat from cattle, particularly skeletal muscle. Humans have been eating beef since prehistoric times.[1] Beef is a source of high-quality protein and essential nutrients.[2]",
-  },
-];
+import api from "../api/apiConfig";
 
 const CatergoryHomePage = () => {
+  const [category, setCategory] = useState([]);
+  //   Api calling
+  useEffect(() => {
+    (async () => {
+      const p = await api.getCatetoryList();
+      setCategory(p.categories);
+    })();
+  }, []);
   return (
     <div className="w-full h-full lg:p-0 sm:p-3 rounded-md">
       <h1 className="lg:text-5xl text-3xl mb-5 px-2">Category</h1>
       <div className="catergory_area flex flex-nowrap overflow-x-scroll gap-2">
-        {sample.map((e) => {
+        {category.map((e) => {
           return (
             <>
-              <div className="category_card flex-shrink-0  md:w-60 w-44 border-2 border-slate-100 rounded-md p-4">
-                <img src={e.strCategoryThumb} alt="" />
+              <div
+                key={e.idCategory}
+                className="category_card flex-shrink-0  md:w-60 w-44 border-2 border-slate-100 rounded-md p-4"
+              >
+                <img
+                  className="w-full"
+                  src={e.strCategoryThumb}
+                  loading="lazy"
+                />
                 <h1 className="text-center text-3xl font-bold my-3">
                   {e.strCategory}
                 </h1>

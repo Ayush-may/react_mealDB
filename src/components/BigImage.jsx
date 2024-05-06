@@ -1,18 +1,78 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
+import api, { apiBase } from "../api/apiConfig";
+
+const selectedCatergory = "";
 
 const BigImage = () => {
+  const [value, setValue] = useState("");
+  const ref = useRef(null);
+  const [suggestion, setSuggestion] = useState([]);
+
+  useEffect(() => {
+    let timer;
+    if (value == "") {
+      setSuggestion([]);
+      return;
+    }
+    timer = setTimeout(async () => {
+      const meal = await api.getAutoSuggetion(3, value);
+      setSuggestion(meal);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [value]);
+
+  const autoSuggest = () => {
+    if (suggestion) {
+      return (
+        <div
+          className="absolute w-full h-auto bg-slate-100 overflow-hidden rounded-lg shadow-md mt-3 top-full"
+          // onClick={() => {
+          //   console.log("im here");
+          //   if (value !== "" && suggestion.length > 0) {
+          //     setValue("");
+          //     setSuggestion([]);
+          //   }
+          // }}
+        >
+          <ul className="flex flex-col">
+            {suggestion.map((e) => (
+              <li
+                className="cursor-pointer p-3 bg-white hover:bg-slate-100"
+                onClick={() => {
+                  setValue(e);
+                }}
+              >
+                {e}
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+    }
+  };
+
   return (
     <div className="sm:w-full h-40 sm:h-40 md:h-60 lg:h-80 lg:px-40 relative">
-      <div className="search_by_name sm:w-fit w-[258px] rounded-lg border-2 shadow-md border-black overflow-hidden">
+      <div className="search_by_name sm:w-fit w-[258px] rounded-lg border-2 shadow-md border-black ">
         <form
           onSubmit={(e) => e.preventDefault()}
-          className="w-full flex flex-nowrap"
+          className="w-full flex flex-nowrap relative"
         >
           <input
-            className="rounded-s p-3 border-none md:w-80 lg:w-96 w-40"
+            ref={ref}
             type="text"
-            placeholder="Search meal by name"
+            value={value}
             style={{ outline: "none" }}
+            placeholder="Search meal by name"
+            className="rounded-s p-3 border-none md:w-80 lg:w-96 w-40"
+            onChange={(e) => {
+              setValue(e.target.value);
+            }}
+            onBlur={() =>
+              setTimeout(() => {
+                setSuggestion([]);
+              }, 500)
+            }
           />
           <button
             type="submit"
@@ -21,6 +81,7 @@ const BigImage = () => {
             search
           </button>
         </form>
+        {autoSuggest()}
       </div>
       <div className="scroll bg-black rounded-b-lg overflow-hidden shadow-md">
         <img
