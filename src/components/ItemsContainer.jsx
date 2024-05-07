@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import api from "../api/apiConfig";
+import MealSkeletonContainer from "./MealSkeletonContainer";
+import ItemMapContainer from "./ItemMapContainer";
+import fakeDelay from "../utlities/fakeDelay";
 
 const limitMeal = 6;
 
@@ -9,17 +12,10 @@ const ItemsContainer = () => {
   const [meal, setMeal] = useState([]);
   const [memoMeal, setMemoMeal] = useState([]);
 
-  //   useMemo(async () => {
-  //     console.log("use memo is running");
-  //     const data = await api.getMeal(state, 6);
-  //     const tempMeal = [...meal, ...data];
-  //     setMemoMeal(tempMeal);
-  //   }, [state]);
-
   useEffect(() => {
     (async () => {
-      console.log("useEffect is running");
-      const data = await api.getMeal(state, 6);
+      const data = await api.getMeal(state, limitMeal);
+      await fakeDelay(2000);
       setMeal(data);
     })();
   }, []);
@@ -27,9 +23,9 @@ const ItemsContainer = () => {
   useEffect(() => {
     if (state > 0) {
       (async () => {
-        console.log("useEffect2 is running");
-        const data = await api.getMealPagination(meal.length, state, 4);
+        const data = await api.getMealPagination(meal.length, state, limitMeal);
         const tempMeal = [...meal, ...data];
+        await fakeDelay(500);
         setMeal(tempMeal);
       })();
     }
@@ -49,31 +45,8 @@ const ItemsContainer = () => {
             xl:grid-cols-5
             "
         >
-          {/* flex flex-wrap  */}
-          {meal.map((e) => {
-            return (
-              <>
-                {/* md:w-60 w-44   */}
-                <div
-                  key={e.idMeal}
-                  className="category_card flex flex-col flex-shrink-0 w-full border-2 border-slate-300 rounded-md p-4"
-                >
-                  <img className="w-full" src={e.strMealThumb} loading="lazy" />
-                  <h1 className="text-center text-3xl font-bold mt-3">
-                    {e.strMeal}
-                  </h1>
-                  <span className=" bg-slate-50 self-end text-slate-400 p-2 my-1 text-xs  rounded-xl ">
-                    {e.strTags}
-                  </span>
-                  <Link to={"#"} className="h-full flex">
-                    <button className="capitalizeself-end w-full self-end rounded-md md:py-3 mt-2 py-2 bg-slate-800 hover:bg-slate-800/90 text-white">
-                      See Ingredient
-                    </button>
-                  </Link>
-                </div>
-              </>
-            );
-          })}
+          {meal.length <= 0 && <MealSkeletonContainer limit={limitMeal} />}
+          <ItemMapContainer meal={meal} />
         </div>
         <div className="w-full flex gap-2 justify-center">
           <button
