@@ -3,7 +3,6 @@ import ImageSkeletonLoader from "./ImageSkeletonLoader";
 import { Link } from "react-router-dom";
 
 const ItemMapContainer = ({ meal }) => {
-//   console.log("map container : ", meal);
   return (
     <>
       {meal &&
