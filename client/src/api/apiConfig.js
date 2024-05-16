@@ -1,54 +1,47 @@
-import { json } from "react-router";
+import axios from "axios";
+import axiosConfig from "./axiosConfig";
 
 class API {
-  constructor() {}
+    constructor() {}
 
-  async getCatetoryList() {
-    const s = await fetch(
-      "https://www.themealdb.com/api/json/v1/1/categories.php"
-    );
-    const p = await s.json();
-    return p;
-  }
-
-  async getAutoSuggetion(limit = 5, value) {
-    const data = await fetch(
-      "https://www.themealdb.com/api/json/v1/1/search.php?s=" + value
-    );
-    const json = await data.json();
-    const meals = json.meals;
-    const a = [];
-    for (let i = 0; i < meals.length && i < limit; i++) {
-      a.push(meals[i].strMeal);
+    //  working good
+    async getCatetoryList() {
+        const res = await axiosConfig.get("/api/meals/category");
+        return res.data;
     }
-    return a;
-  }
 
-  async getMeal(state, limit) {
-    const data = await fetch(
-      "https://www.themealdb.com/api/json/v1/1/search.php?s"
-    );
-    const jsonData = await data.json();
-    const { meals } = jsonData;
-    const tempMeal = [];
-    for (let i = state; i < state + limit; i++) {
-      tempMeal.push(meals[i]);
+    //  working good
+    async getAutoSuggetion(limit = 5, value) {
+        const a = [];
+        const res = await axiosConfig.get(
+            `/api/meals/autosuggestion?value=${value}`
+        );
+        for (let i = 0; i < res.data.length && i < limit; i++) {
+            a.push(res.data[i].strMeal);
+        }
+        return a;
     }
-    return tempMeal;
-  }
 
-  async getMealPagination(length, state, limit) {
-    const data = await fetch(
-      "https://www.themealdb.com/api/json/v1/1/search.php?s"
-    );
-    const jsonData = await data.json();
-    const { meals } = jsonData;
-    const tempMeal = [];
-    for (let i = length; i < length + limit; i++) {
-      if (i < meals.length) tempMeal.push(meals[i]);
+    async getMeal(state, limit) {
+        const data = await fetch(
+            "https://www.themealdb.com/api/json/v1/1/search.php?s"
+        );
+        const jsonData = await data.json();
+        const { meals } = jsonData;
+        const tempMeal = [];
+        for (let i = state; i < state + limit; i++) {
+            tempMeal.push(meals[i]);
+        }
+        return tempMeal;
     }
-    return tempMeal;
-  }
+
+    async getMealPagination(length, state, limit) {
+        return (
+            await axiosConfig.get(
+                `/api/meals/mealpagination?limit=${limit}&state=${state}&length=${length}`
+            )
+        ).data;
+    }
 }
 
 const api = new API();

@@ -7,18 +7,18 @@ import Footer from "./components/Footer";
 import { useParams } from "react-router";
 
 const App = () => {
- const param = useParams();
- console.log(param);
+    const param = useParams();
+    console.log(param);
 
- return (
-  <>
-   <NavBar />
-   <BigImage />
-   <CategoryContainer />
-   <ItemsContainer />
-   <Footer />
-  </>
- );
+    return (
+        <>            
+            <NavBar />
+            <BigImage />
+            <CategoryContainer />
+            <ItemsContainer />
+            <Footer />
+        </>
+    );
 };
 
 export default App;

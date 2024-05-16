@@ -7,12 +7,13 @@ import ButtonIngredient from "./ButtonIngredient";
 
 const CatergoryHomePage = () => {
  const [category, setCategory] = useState([]);
- //   Api calling
+ // Api calling
  useEffect(() => {
   (async () => {
    const p = await api.getCatetoryList();
-   await fakeDelay(1500);
-   setCategory(p.categories);
+   // fake wait
+   //  await fakeDelay(1500);
+   setCategory(p);
   })();
  }, []);
  return (
