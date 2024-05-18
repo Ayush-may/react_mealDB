@@ -1,10 +1,10 @@
 import React from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import Login from "./components/loginPage/Login.jsx";
 import SignUp from "./components/signup/SignUp.jsx";
 import App from "./App.jsx";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import NavBar from "./components/NavBar.jsx";
 
 const router = createBrowserRouter([
     {
@@ -17,26 +17,37 @@ const router = createBrowserRouter([
     },
     {
         path: "/themeal",
-        element: <App />,
+        element: (
+            <>
+                <NavBar />
+                <Outlet />
+            </>
+        ),
+        children: [
+            {
+                path: "",
+                element: <App />,
+            },
+            {
+                path: "profile",
+                element: <h1>This is profile</h1>,
+            },
+            {
+                path: "order",
+                element: <h1>This is order</h1>,
+            },
+            {
+                path: "cart",
+                element: <h1>This is cart</h1>,
+            },
+        ],
     },
 ]);
 
 const Route = () => {
     return (
         <>
-            {/* <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover={false}
-                theme="dark"
-            /> */}
-            <RouterProvider router={router} />;
+            <RouterProvider router={router} />
         </>
     );
 };

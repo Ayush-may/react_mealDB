@@ -7,12 +7,8 @@ import Footer from "./components/Footer";
 import { useParams } from "react-router";
 
 const App = () => {
-    const param = useParams();
-    console.log(param);
-
     return (
-        <>            
-            <NavBar />
+        <>
             <BigImage />
             <CategoryContainer />
             <ItemsContainer />

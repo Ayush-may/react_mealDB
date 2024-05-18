@@ -1,9 +1,10 @@
 import React from "react";
 import TheMealText from "../TheMealText";
-import { Link } from "react-router-dom";
+import { Link, json } from "react-router-dom";
 import Footer from "../Footer";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import axiosConfig from "../../api/axiosConfig";
 
 const usernameValidations = {
     required: "username is required",
@@ -26,26 +27,46 @@ const Login = () => {
     const {
         register,
         handleSubmit,
+        setError,
         formState: { errors, isSubmitting },
     } = useForm();
 
-    // if (isSubmitting) {
-    //     toast("Login...", {
-    //         position: "top-right",
-    //         autoClose: 5000,
-    //         hideProgressBar: false,
-    //         closeOnClick: true,
-    //         pauseOnHover: false,
-    //         draggable: true,
-    //         progress: undefined,
-    //         theme: "dark",
-    //         // transition: "Slide",
-    //     });
-    // }
-
     const onSubmit = async (data) => {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        console.log(data);
+        try {
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            const response = await axiosConfig.post("/api/users/loginuser", {
+                data: { ...data },
+            });
+
+            if (response.status == 200) alert("User is logged in !");
+        } catch (error) {
+            if (!error.response) {
+                alert("something went wrong");
+                return;
+            }
+            const { status } = error.response;
+            if (status == 401) {
+                [
+                    {
+                        type: "custom",
+                        name: "username",
+                        message: "username is wrong",
+                    },
+                    {
+                        type: "custom",
+                        name: "password",
+                        message: "password is wrong",
+                    },
+                ].forEach(({ name, type, message }) => {
+                    setError(name, { type, message });
+                });
+            } else if (status == 404) {
+                setError("username", {
+                    type: "custom",
+                    message: "username is not available",
+                });
+            } else if (status == 400) alert("Something went wrong");
+        }
     };
 
     const UsernameError = () => {

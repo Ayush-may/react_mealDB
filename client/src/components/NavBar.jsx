@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 import TheMealText from "./TheMealText";
 
 const NavBar = () => {
@@ -26,22 +26,52 @@ const NavBar = () => {
                     </div>
                 </div>
                 <div className="bg-slate-900 text-white uppercase w-full h-auto mt-2 flex sm:justify-end justify-center gap-3 lg:px-40 md:px-32 px-4">
-                    <Link className="hover:outline hover:outline-1  p-1">
+                    <NavLink
+                        to=""
+                        end
+                        className={({ isActive }) =>
+                            isActive
+                                ? "text-red-400  p-1"
+                                : "hover:outline hover:outline-1  p-1"
+                        }
+                    >
                         Home
-                    </Link>
-                    <Link className="hover:outline hover:outline-1  p-1">
+                    </NavLink>
+                    <NavLink
+                        to="profile"
+                        end
+                        className={({ isActive }) =>
+                            isActive
+                                ? "text-red-400  p-1"
+                                : "hover:outline hover:outline-1  p-1"
+                        }
+                    >
                         Profile
-                    </Link>
-                    <Link className="hover:outline hover:outline-1  p-1">
-                        order
-                    </Link>
-                    <Link className="hover:outline hover:outline-1  p-1">
+                    </NavLink>
+                    <NavLink
+                        to="order"
+                        end
+                        className={({ isActive }) =>
+                            isActive
+                                ? "text-red-400  p-1"
+                                : "hover:outline hover:outline-1  p-1"
+                        }
+                    >
+                        Order
+                    </NavLink>
+                    <NavLink
+                        to="Cart"
+                        end
+                        className={({ isActive }) =>
+                            isActive
+                                ? "text-red-400  p-1"
+                                : "hover:outline hover:outline-1  p-1"
+                        }
+                    >
                         Cart
-                    </Link>
+                    </NavLink>
                 </div>
             </nav>
-            {/* This is outlet used to show children without removing this parent component/element */}
-            {/* <Outlet /> */}
         </>
     );
 };
