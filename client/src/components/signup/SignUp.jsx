@@ -21,15 +21,42 @@ const passwordValidations = {
  },
 };
 
+const userIsAlreadyPresentError = {
+ name: "username",
+ type: "custom",
+ error: "User is already present",
+};
+
+// Component
 const SignUp = () => {
  const {
   register,
   watch,
   handleSubmit,
+  setError,
+  reset,
   formState: { isSubmitting, errors },
  } = useForm();
 
- const onSubmit = async (data) => {};
+ const onSubmit = async (data) => {
+  try {
+   const response = await axiosConfig.post("/api/users/createuser", {
+    data: { username: data.username, password: data.password },
+   });
+   reset();
+  } catch (error) {
+   reset();
+   const { status } = error.response;
+   if (status == 200) {
+    alert("user is created !");
+   } else if (status == 409) {
+    setError("username", {
+     type: "custom",
+     message: "username is already present",
+    });
+   }
+  }
+ };
 
  const UsernameError = () => (
   <p className="text-sm font-light text-red-500 mt-[-10px] ps-5">
@@ -77,7 +104,7 @@ const SignUp = () => {
        name="password"
        placeholder="password"
        className="py-3 ps-5 rounded-full border w-full"
-       autocomplete="off"
+       autoComplete="off"
       />
       <PasswordError />
       <input
@@ -91,7 +118,7 @@ const SignUp = () => {
        name="confirmPassword"
        placeholder="confirm password"
        className="py-3 ps-5 rounded-full border w-full"
-       autocomplete="off"
+       autoComplete="off"
       />
       <ConfirmPasswordError />
       <button

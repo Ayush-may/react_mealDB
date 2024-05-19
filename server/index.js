@@ -23,7 +23,7 @@ mongoConnect(`mongodb://127.0.0.1:27017/ingredient_ecommerce`).then(() =>
  console.log("mongoDb is connected")
 );
 
-app.use("/api/users", auth, userRouter);
+app.use("/api/users", userRouter);
 app.use("/api/meals", mealRouter);
 
 app.listen(PORT, () => console.log("listening on PORT : ", PORT));
