@@ -31,49 +31,8 @@ const Login = () => {
   watch,
   formState: { errors, isSubmitting },
  } = useForm();
- const navigate = useNavigate();
 
- const onSubmit = async (data) => {
-  try {
-   await new Promise((resolve) => setTimeout(resolve, 1000));
-   const response = await axiosConfig.post("/api/users/loginuser", {
-    data: { ...data },
-   });
-
-   if (response.status == 200) {
-    navigate("/themeal", {
-     state: { username: watch("username") },
-    });
-   }
-  } catch (error) {
-   if (!error.response) {
-    alert("something went wrong");
-    return;
-   }
-   const { status } = error.response;
-   if (status == 401) {
-    [
-     {
-      type: "custom",
-      name: "username",
-      message: "username is wrong",
-     },
-     {
-      type: "custom",
-      name: "password",
-      message: "password is wrong",
-     },
-    ].forEach(({ name, type, message }) => {
-     setError(name, { type, message });
-    });
-   } else if (status == 404) {
-    setError("username", {
-     type: "custom",
-     message: "username is not available",
-    });
-   } else if (status == 400) alert("Something went wrong");
-  }
- };
+ const onSubmit = async (data) => {};
 
  const UsernameError = () => {
   return (

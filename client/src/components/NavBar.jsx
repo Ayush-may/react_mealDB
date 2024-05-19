@@ -4,20 +4,6 @@ import TheMealText from "./TheMealText";
 import axiosConfig from "../api/axiosConfig";
 
 const NavBar = () => {
- const navigate = useNavigate();
-
- useEffect(() => {
-  (async () => {
-   try {
-    const response = await axiosConfig.get("/api/users/checkauth");
-    console.log(response);
-   } catch (error) {
-    const { status } = error.response;
-    if (status == 401) navigate("/", { replace: true });
-   }
-  })();
- }, []);
-
  return (
   <>
    <nav className="fixed w-full z-10 flex flex-col justify-between pt-2 bg-zinc-100 h-fit shadow border-b-2 border-b-slate-700">
