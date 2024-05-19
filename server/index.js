@@ -10,9 +10,9 @@ const { auth } = require("./middleware/auth");
 const PORT = process.env.PORT || 8001;
 
 var corsOptions = {
-    origin: "http://localhost:5173",
-    optionsSuccessStatus: 200,
-    credentials: true,
+ origin: "http://localhost:5173",
+ optionsSuccessStatus: 200,
+ credentials: true,
 };
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -20,7 +20,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 mongoConnect(`mongodb://127.0.0.1:27017/ingredient_ecommerce`).then(() =>
-    console.log("mongoDb is connected")
+ console.log("mongoDb is connected")
 );
 
 app.use("/api/users", auth, userRouter);
