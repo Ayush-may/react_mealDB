@@ -1,22 +1,20 @@
-import React, { useEffect } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import TheMealText from "./TheMealText";
-import axiosConfig from "../api/axiosConfig";
+import { AuthContext } from "./authProvider/AuthProvider";
 
 const NavBar = () => {
- const navigate = useNavigate();
+ const location = useLocation();
+ const naviagate = useNavigate();
+ const [name, setName] = useState(() =>
+  localStorage.getItem("themeal_username")
+ );
 
+ // if no one is logged in
+ const { isAuth, setAuth } = useContext(AuthContext);
  useEffect(() => {
-  (async () => {
-   try {
-    const response = await axiosConfig.get("/api/users/checkauth");
-    console.log(response);
-   } catch (error) {
-    const { status } = error.response;
-    if (status == 401) navigate("/", { replace: true });
-   }
-  })();
- }, []);
+  if (!isAuth) naviagate("/");
+ });
 
  return (
   <>
@@ -27,9 +25,20 @@ const NavBar = () => {
       <Link to="https://www.themealdb.com/api.php">
        <button className="bg-gray-800 text-white px-4 py-1 rounded">API</button>
       </Link>
+      <button
+       className="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded"
+       onClick={() => {
+        // This one deletes the cookies
+        document.cookie =
+         "uid =; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+        setAuth(false);
+       }}
+      >
+       Log out
+      </button>
       <div className="nav_profile_img w-10 h-10 rounded-full bg-dark border border-black overflow-hidden object-cover object-center cursor-pointer">
        <img
-        src="https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=Ayush sharma"
+        src={`https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${name}`}
         alt="profile"
        />
       </div>

@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import TheMealText from "../TheMealText";
 import { Link, json, useNavigate } from "react-router-dom";
 import Footer from "../Footer";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import axiosConfig from "../../api/axiosConfig";
+import { AuthContext } from "../authProvider/AuthProvider";
 
 const usernameValidations = {
  required: "username is required",
@@ -17,10 +18,10 @@ const usernameValidations = {
 
 const passwordValidations = {
  required: "password is required",
- minLength: {
-  value: 8,
-  message: "minimum character must be 8",
- },
+ //  minLength: {
+ //   value: 8,
+ //   message: "minimum character must be 8",
+ //  },
 };
 
 const Login = () => {
@@ -33,45 +34,24 @@ const Login = () => {
  } = useForm();
  const navigate = useNavigate();
 
+ //  check if user is present or not
+ const { isAuth, setAuth } = useContext(AuthContext);
+ useEffect(() => {
+  if (isAuth) navigate("/themeal");
+ });
+
  const onSubmit = async (data) => {
   try {
-   await new Promise((resolve) => setTimeout(resolve, 1000));
-   const response = await axiosConfig.post("/api/users/loginuser", {
-    data: { ...data },
+   const response = axiosConfig.post("/api/users/loginuser", {
+    data: {
+     username: watch("username"),
+     password: watch("password"),
+    },
    });
-
-   if (response.status == 200) {
-    navigate("/themeal", {
-     state: { username: watch("username") },
-    });
-   }
+   localStorage.setItem("themeal_username", watch("username"));
+   setAuth(true);
   } catch (error) {
-   if (!error.response) {
-    alert("something went wrong");
-    return;
-   }
-   const { status } = error.response;
-   if (status == 401) {
-    [
-     {
-      type: "custom",
-      name: "username",
-      message: "username is wrong",
-     },
-     {
-      type: "custom",
-      name: "password",
-      message: "password is wrong",
-     },
-    ].forEach(({ name, type, message }) => {
-     setError(name, { type, message });
-    });
-   } else if (status == 404) {
-    setError("username", {
-     type: "custom",
-     message: "username is not available",
-    });
-   } else if (status == 400) alert("Something went wrong");
+   console.log("something went wrong");
   }
  };
 
@@ -108,6 +88,7 @@ const Login = () => {
       onSubmit={handleSubmit(onSubmit)}
       autoComplete="off"
      >
+      <h3 className="text-center text-3xl">Login</h3>
       <input
        {...register("username", usernameValidations)}
        autoComplete="off"

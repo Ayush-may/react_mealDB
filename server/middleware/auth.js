@@ -1,23 +1,24 @@
 const jwt = require("jsonwebtoken");
 
 function auth(req, res, next) {
+ console.log("this middleware is running");
+
  try {
-  const { uid } = req.cookies;
-  const { username } = req.body.data;
-  // invalid token or no token is available
-  if (!uid) {
-   return res.status(401).end("token invalid");
-  }
-  // token is available
-  else if (uid) {
-   const verifyToken = jwt.verify(uid, process.env.JSONKEY);
-   if (!verifyToken) return res.status(401).end("Token is not verified !");
-   req.user = verifyToken;
-  }
+  // get the token from request
+  const uid = req.cookies?.uid;
+  // check if token ( uid ) is avaialble or not
+  if (!uid) return res.status(401).send("token is not available");
+
+  // verify the token
+  const user = jwt.verify(uid, process.env.JSONKEY);
+  if (!user) return res.status(401).send("token is  in-valid");
+
+  // everything is OK
+  req.user = user;
   next();
-  return;
  } catch (error) {
-  return res.status(401).end("SERVER ERROR");
+  // in-case something happened
+  return res.status(401).send("token is  in-valid");
  }
 }
 

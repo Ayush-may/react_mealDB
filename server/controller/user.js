@@ -1,64 +1,58 @@
 const User = require("../model/user");
 const bcrypt = require("bcrypt");
-const { json } = require("express");
 const jwt = require("jsonwebtoken");
-
-const KEY = "THIS IS SECRET KEY !";
 
 async function handleUserCreate(req, res) {
  try {
-  const { username, password, confirmPassword } = req.body.data;
+  const { username, password } = req.body.data;
 
-  // TODO : check if the username is available or not
+  // check if it is already present or not
+  const data = await User.findOne({ username });
+  if (data) return res.status(409).send("user is already present");
 
-  if (!username || !password || !confirmPassword)
-   return res.status(400).json({ error: "missing required field" });
+  // hash the password
+  const genSalt = await bcrypt.genSalt(10);
+  const hashPassword = await bcrypt.hash(password, genSalt);
 
-  bcrypt.genSalt(10, (err_1, salt) => {
-   bcrypt.hash(password, salt, async (err_2, hash) => {
-    if (err_2) return res.status(500).json({ error: "Something went wrong" });
+  // generate the jwt token and logged in
+  const token = jwt.sign({ username }, process.env.JSONKEY);
+  res.cookie("uid", token);
 
-    await User.create({ username, password: hash });
-   });
-  });
-
-  res.status(200).json({ success: "ok" });
+  // save the user and return from here
+  (await User.create({ username, password: hashPassword })).save();
+  return res.status(200).send("The user is created !");
  } catch (error) {
-  res.json({ error });
+  // in-case something happened
+  res.status(400).send("something went wrong");
  }
 }
 
 async function handleUserLogin(req, res) {
  try {
+  // getting the values
   const { username, password } = req.body.data;
 
-  if (!username || !password) return res.status(401).end("unauthorized");
-
+  // check if user is present or not in database
   const data = await User.findOne({ username });
-  if (data) {
-   bcrypt.compare(password, data.password).then((result) => {
-    if (!result) return res.status(401).end("unauthorized");
+  if (!data) return res.status(400).send("user is not available");
 
-    // TODO : add jwt auth
-    const token = jwt.sign({ username }, KEY);
-    console.log(token);
-    res.cookie("uid", token, {});
+  // if user is available then match the hashpassword with current password
+  const isHashTrue = await bcrypt.compare(password, data.password);
+  if (!isHashTrue) return res.status(400).send("password is wrong");
 
-    return res.status(200).json({ success: "ok" });
-   });
-  } else {
-   res.status(404).end("user not available");
-  }
+  // add token to the browser
+  const token = jwt.sign({ username }, process.env.JSONKEY);
+  res.cookie("uid", token);
+
+  // everything went good
+  res.status(200).send("user is loged in");
  } catch (error) {
-  res.status(400).json({ error });
+  // in-case something happened
+  return res.status(400).send("Something went wrong");
  }
 }
 
-async function handleUserAuthCheck() {
- try {
-  return res.status(200).send("user is logged");
- } catch (error) {}
-}
+async function handleUserAuthCheck() {}
 
 module.exports = {
  handleUserCreate,
