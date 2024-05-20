@@ -1,7 +1,7 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
-require("dotenv").config();
 const mealRouter = require("./routes/meal");
 const userRouter = require("./routes/user");
 const mongoConnect = require("./connection/mongoConnection");
@@ -23,7 +23,16 @@ mongoConnect(`mongodb://127.0.0.1:27017/ingredient_ecommerce`).then(() =>
  console.log("mongoDb is connected")
 );
 
+// auth the user
+app.get("/authuser", auth, (req, res) => {
+ console.log('this is running')
+ res.status(200).send("OK");
+});
+
+// user login and sign up
 app.use("/api/users", userRouter);
+// user data after logged-in
+// app.use("/api/users/profile");
 app.use("/api/meals", mealRouter);
 
 app.listen(PORT, () => console.log("listening on PORT : ", PORT));

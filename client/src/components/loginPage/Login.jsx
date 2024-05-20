@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import TheMealText from "../TheMealText";
 import { Link, json, useNavigate } from "react-router-dom";
 import Footer from "../Footer";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import axiosConfig from "../../api/axiosConfig";
+import { AuthContext } from "../authProvider/AuthProvider";
 
 const usernameValidations = {
  required: "username is required",
@@ -17,10 +18,10 @@ const usernameValidations = {
 
 const passwordValidations = {
  required: "password is required",
- minLength: {
-  value: 8,
-  message: "minimum character must be 8",
- },
+ //  minLength: {
+ //   value: 8,
+ //   message: "minimum character must be 8",
+ //  },
 };
 
 const Login = () => {
@@ -31,8 +32,28 @@ const Login = () => {
   watch,
   formState: { errors, isSubmitting },
  } = useForm();
+ const navigate = useNavigate();
 
- const onSubmit = async (data) => {};
+ //  check if user is present or not
+ const { isAuth, setAuth } = useContext(AuthContext);
+ useEffect(() => {
+  if (isAuth) navigate("/themeal");
+ });
+
+ const onSubmit = async (data) => {
+  try {
+   const response = axiosConfig.post("/api/users/loginuser", {
+    data: {
+     username: watch("username"),
+     password: watch("password"),
+    },
+   });
+   localStorage.setItem("themeal_username", watch("username"));
+   setAuth(true);
+  } catch (error) {
+   console.log("something went wrong");
+  }
+ };
 
  const UsernameError = () => {
   return (
@@ -67,6 +88,7 @@ const Login = () => {
       onSubmit={handleSubmit(onSubmit)}
       autoComplete="off"
      >
+      <h3 className="text-center text-3xl">Login</h3>
       <input
        {...register("username", usernameValidations)}
        autoComplete="off"

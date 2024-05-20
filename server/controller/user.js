@@ -27,7 +27,30 @@ async function handleUserCreate(req, res) {
  }
 }
 
-async function handleUserLogin(req, res) {}
+async function handleUserLogin(req, res) {
+ try {
+  // getting the values
+  const { username, password } = req.body.data;
+
+  // check if user is present or not in database
+  const data = await User.findOne({ username });
+  if (!data) return res.status(400).send("user is not available");
+
+  // if user is available then match the hashpassword with current password
+  const isHashTrue = await bcrypt.compare(password, data.password);
+  if (!isHashTrue) return res.status(400).send("password is wrong");
+
+  // add token to the browser
+  const token = jwt.sign({ username }, process.env.JSONKEY);
+  res.cookie("uid", token);
+
+  // everything went good
+  res.status(200).send("user is loged in");
+ } catch (error) {
+  // in-case something happened
+  return res.status(400).send("Something went wrong");
+ }
+}
 
 async function handleUserAuthCheck() {}
 

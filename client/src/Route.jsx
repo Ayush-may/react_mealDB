@@ -5,6 +5,7 @@ import SignUp from "./components/signup/SignUp.jsx";
 import App from "./App.jsx";
 import "react-toastify/dist/ReactToastify.css";
 import NavBar from "./components/NavBar.jsx";
+import AuthProvider from "./components/authProvider/AuthProvider.jsx";
 
 const router = createBrowserRouter([
  {
@@ -47,7 +48,9 @@ const router = createBrowserRouter([
 const Route = () => {
  return (
   <>
-   <RouterProvider router={router} />
+   <AuthProvider>
+    <RouterProvider router={router} />
+   </AuthProvider>
   </>
  );
 };

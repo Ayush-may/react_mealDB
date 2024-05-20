@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import TheMealText from "../TheMealText";
 import Footer from "../Footer";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axiosConfig from "../../api/axiosConfig";
+import { AuthContext } from "../authProvider/AuthProvider";
 
 const usernameValidations = {
  required: "username is required",
@@ -15,10 +16,10 @@ const usernameValidations = {
 };
 const passwordValidations = {
  required: "password is required",
- //  minLength: {
- //   value: 8,
- //   message: "minimum character must be 8",
- //  },
+ minLength: {
+  value: 8,
+  message: "minimum character must be 8",
+ },
 };
 
 const userIsAlreadyPresentError = {
@@ -39,16 +40,19 @@ const SignUp = () => {
  } = useForm();
  const navigate = useNavigate();
 
+ //  check if user is logged in or not
+ const { isAuth, setAuth } = useContext(AuthContext);
+ useEffect(() => {
+  if (isAuth) navigate("/themeal");
+ });
+
  const onSubmit = async (data) => {
   try {
    const response = await axiosConfig.post("/api/users/createuser", {
     data: { username: data.username, password: data.password },
    });
-   if (response.status == 200) {
-    alert("user is created !");
-    navigate("/themeal", { state: { username: watch("username") } });
-   }
-   reset();
+   localStorage.setItem("themeal_username", data.username);
+   setAuth(true);
   } catch (error) {
    reset();
    const { status } = error.response;
@@ -92,6 +96,7 @@ const SignUp = () => {
       className="mt-10 flex flex-col gap-3"
       autoComplete="off"
      >
+      <h3 className="text-center text-3xl">Sign-up</h3>
       <input
        {...register("username", usernameValidations)}
        type="text"
