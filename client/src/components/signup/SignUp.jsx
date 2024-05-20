@@ -1,24 +1,24 @@
 import React from "react";
 import TheMealText from "../TheMealText";
 import Footer from "../Footer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axiosConfig from "../../api/axiosConfig";
 
 const usernameValidations = {
  required: "username is required",
  pattern: {
-  value: /^[A-Z][a-zA-Z]*$/,
+  value: /^[A-Z][a-zA-Z0-9]*$/,
   message:
    "Username must start with a capital letter and contain only letters.",
  },
 };
 const passwordValidations = {
  required: "password is required",
- minLength: {
-  value: 8,
-  message: "minimum character must be 8",
- },
+ //  minLength: {
+ //   value: 8,
+ //   message: "minimum character must be 8",
+ //  },
 };
 
 const userIsAlreadyPresentError = {
@@ -37,19 +37,22 @@ const SignUp = () => {
   reset,
   formState: { isSubmitting, errors },
  } = useForm();
+ const navigate = useNavigate();
 
  const onSubmit = async (data) => {
   try {
    const response = await axiosConfig.post("/api/users/createuser", {
     data: { username: data.username, password: data.password },
    });
+   if (response.status == 200) {
+    alert("user is created !");
+    navigate("/themeal", { state: { username: watch("username") } });
+   }
    reset();
   } catch (error) {
    reset();
    const { status } = error.response;
-   if (status == 200) {
-    alert("user is created !");
-   } else if (status == 409) {
+   if (status == 409) {
     setError("username", {
      type: "custom",
      message: "username is already present",
@@ -107,7 +110,7 @@ const SignUp = () => {
        autoComplete="off"
       />
       <PasswordError />
-      <input
+      {/* <input
        {...register("confirmPassword", {
         validate: (value) => {
          if (watch("password") != value) return "Password is not same";
@@ -120,7 +123,7 @@ const SignUp = () => {
        className="py-3 ps-5 rounded-full border w-full"
        autoComplete="off"
       />
-      <ConfirmPasswordError />
+      <ConfirmPasswordError /> */}
       <button
        type="submit"
        className="w-full bg-slate-800 text-white py-3 rounded-full"

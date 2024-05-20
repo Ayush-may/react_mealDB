@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import TheMealText from "./TheMealText";
-import axiosConfig from "../api/axiosConfig";
 
 const NavBar = () => {
+ const location = useLocation();
+ const [name, setName] = useState(() => location.state.username);
+
  return (
   <>
    <nav className="fixed w-full z-10 flex flex-col justify-between pt-2 bg-zinc-100 h-fit shadow border-b-2 border-b-slate-700">
@@ -15,7 +17,7 @@ const NavBar = () => {
       </Link>
       <div className="nav_profile_img w-10 h-10 rounded-full bg-dark border border-black overflow-hidden object-cover object-center cursor-pointer">
        <img
-        src="https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=Ayush sharma"
+        src={`https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${name}`}
         alt="profile"
        />
       </div>
