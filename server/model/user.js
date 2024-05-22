@@ -2,17 +2,28 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema({
-    username: {
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  cart: [
+    {
+      mealId: {
         type: String,
         required: true,
-        unique: true,
-        trim: true,
+      },
+      quantity: {
+        type: Number,
+      },
     },
-    password: {
-        type: String,
-        required: true,
-    },
-    // TODO : Add more entity for card and order
+  ],
+  // TODO : Add more entity for card and order
 });
 
 const User = mongoose.model("User", userSchema);
