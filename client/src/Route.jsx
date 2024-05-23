@@ -10,6 +10,9 @@ import UserProfile from "./components/profile/UserProfile.jsx";
 import Footer from "./components/Footer.jsx";
 import Cart from "./components/cart/Cart.jsx";
 import Order from "./components/order/Order.jsx";
+import FooterBig from "./components/FooterBig.jsx";
+import { Provider } from "react-redux";
+import {store} from "../Redux/store/store"
 
 const router = createBrowserRouter([
   {
@@ -26,17 +29,28 @@ const router = createBrowserRouter([
       <>
         <NavBar />
         <Outlet />
+        {/* <FooterBig /> */}
         <Footer />
       </>
     ),
     children: [
       {
         path: "",
-        element: <App />,
+        element: (
+          <>
+            <App />
+            <FooterBig />
+          </>
+        ),
       },
       {
         path: "profile",
-        element: <UserProfile />,
+        element: (
+          <>
+            <UserProfile />
+            <FooterBig />
+          </>
+        ),
       },
       {
         path: "order",
@@ -54,7 +68,9 @@ const Route = () => {
   return (
     <>
       <AuthProvider>
-        <RouterProvider router={router} />
+        <Provider store={store} >
+          <RouterProvider router={router} />
+        </Provider>
       </AuthProvider>
     </>
   );

@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import { RiPagesLine } from "react-icons/ri";
-import { FiHeart } from "react-icons/fi";
-import { RiShoppingCartLine } from "react-icons/ri";
 import { IoMdArrowDropright } from "react-icons/io";
 import { Link } from "react-router-dom";
 
@@ -24,24 +21,9 @@ const UserProfile = () => {
           <h4 className="font-light text-4xl text-center mt-5 uppercase">
             {name}
           </h4>
-          {/* below image section */}
-          {/* <div className="mt-5 w-fit flex shadow-lg">
-            <div className="w-fit p-6 flex flex-col gap-1 hover:bg-gray-100 transition-colors cursor-pointer">
-              <RiPagesLine size={"4em"} color="" />
-              <p className="text-xl text-center">order</p>
-            </div>
-            <div className="w-fit p-6 flex flex-col gap-1 hover:bg-gray-100 transition-colors cursor-pointer">
-              <FiHeart size={"4em"} />
-              <p className="text-xl text-center">Wishlist</p>
-            </div>
-            <div className="w-fit p-6 flex flex-col gap-1 hover:bg-gray-100 transition-colors cursor-pointer">
-              <RiShoppingCartLine size={"4em"} />
-              <p className="text-xl text-center">Cart</p>
-            </div>
-          </div> */}
 
           {/* This is other options */}
-          <div className="w-full mt-5 flex flex-col flex-wrap justify-center self-start gap-5 ">
+          <div className="w-full mt-5 flex flex-col flex-wrap justify-center self-start gap-5 max-sm:gap-1">
             <Link
               to={"/themeal/order"}
               className="px-10 py-7  flex items-center rounded-xl hover:bg-gray-100 transition-colors cursor-pointer"
@@ -84,22 +66,6 @@ const UserProfile = () => {
                 </span>
                 <span className="text-md max-sm:text-sm font-light text-gray-700">
                   fav foods that you have liked...
-                </span>
-              </div>
-              <span className="ms-auto">
-                <IoMdArrowDropright size={"2em"} />
-              </span>
-            </Link>
-            <Link
-              to={"#"}
-              className="px-10 py-7  flex items-center rounded-xl hover:bg-gray-100 transition-colors cursor-pointer"
-            >
-              <div>
-                <span className="block text-4xl max-sm:text-3xl mb-2">
-                  Setting
-                </span>
-                <span className="text-md max-sm:text-sm font-light text-gray-700">
-                  Password, Notificatiosn..
                 </span>
               </div>
               <span className="ms-auto">
@@ -151,6 +117,35 @@ const UserProfile = () => {
                 <IoMdArrowDropright size={"2em"} />
               </span>
             </Link>
+            <Link
+              to={"#"}
+              className="px-10 py-7  flex items-center rounded-xl hover:bg-gray-100 transition-colors cursor-pointer"
+            >
+              <div>
+                <span className="block text-4xl max-sm:text-3xl mb-2">
+                  Setting
+                </span>
+                <span className="text-md max-sm:text-sm font-light text-gray-700">
+                  Password, Notificatiosn..
+                </span>
+              </div>
+              <span className="ms-auto">
+                <IoMdArrowDropright size={"2em"} />
+              </span>
+            </Link>
+            <div className="px-10 py-7  flex items-center rounded-xl hover:bg-red-400 transition-colors cursor-pointer">
+              <div>
+                <span className="block text-4xl max-sm:text-3xl mb-2">
+                  Log out
+                </span>
+                <span className="text-md max-sm:text-sm font-light text-gray-700">
+                  Password, Notificatiosn..
+                </span>
+              </div>
+              <span className="ms-auto">
+                <IoMdArrowDropright size={"2em"} />
+              </span>
+            </div>
             {/* <p className="px-5 py-7 min-w-[300px] max-w-[400px] flex items-center rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
               <div>
                 <span className="block text-4xl mb-2">Shipping Address</span>

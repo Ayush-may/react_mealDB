@@ -2,6 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import TheMealText from "./TheMealText";
 import { AuthContext } from "./authProvider/AuthProvider";
+import {  useDispatch } from 'react-redux';
+import { insertCatergory } from "../../Redux/features/category/catergorySlice";
+
 
 const NavBar = () => {
   const location = useLocation();
@@ -9,6 +12,10 @@ const NavBar = () => {
   const [name, setName] = useState(() =>
     localStorage.getItem("themeal_username")
   );
+
+  const dispatch = useDispatch();
+  dispatch( insertCatergory() );
+
 
   // if no one is logged in
   const { isAuth, setAuth } = useContext(AuthContext);
@@ -40,10 +47,12 @@ const NavBar = () => {
             </button>
             <p className="font-bold text-lg max-md:hidden">Welcome {name} !</p>
             <div className="nav_profile_img w-10 h-10 rounded-full bg-dark border border-black overflow-hidden object-cover object-center cursor-pointer">
-              <img
-                src={`https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${name}`}
-                alt="profile"
-              />
+              <Link to={"/themeal/profile"}>
+                <img
+                  src={`https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${name}`}
+                  alt="profile"
+                />
+              </Link>
             </div>
           </div>
         </div>
