@@ -2,9 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import TheMealText from "./TheMealText";
 import { AuthContext } from "./authProvider/AuthProvider";
-import {  useDispatch } from 'react-redux';
-import { insertCatergory } from "../../Redux/features/category/catergorySlice";
-
 
 const NavBar = () => {
   const location = useLocation();
@@ -12,10 +9,6 @@ const NavBar = () => {
   const [name, setName] = useState(() =>
     localStorage.getItem("themeal_username")
   );
-
-  const dispatch = useDispatch();
-  dispatch( insertCatergory() );
-
 
   // if no one is logged in
   const { isAuth, setAuth } = useContext(AuthContext);
