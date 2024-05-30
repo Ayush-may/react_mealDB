@@ -14,6 +14,7 @@ import FooterBig from "./components/FooterBig.jsx";
 import { Provider } from "react-redux";
 import {store} from "../Redux/store/store"
 import Catergory from "./components/catergory/Catergory.jsx";
+import MealById from "./components/catergory/MealById.jsx";
 
 const router = createBrowserRouter([
   {
@@ -63,8 +64,16 @@ const router = createBrowserRouter([
       },
       {
         path : "catergory/:id",
-        element : <Catergory />
+        element : <Catergory /> ,
       },
+      {
+        path : "catergory/:id/:mealId",
+        element : <MealById />
+      },
+      {
+        path: "meal/:mealId",
+        element : <MealById />
+      }
     ],
   },
 ]);

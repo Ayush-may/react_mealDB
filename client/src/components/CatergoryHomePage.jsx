@@ -7,7 +7,7 @@ import { categoryFetch } from "../../Redux/features/category/catergorySlice";
 
 const CatergoryHomePage = () => {
   const dispatch = useDispatch();
-  const category = useSelector(state => state.catergory.catergory);
+  const category = useSelector(state => state.catergory.catergory || []);
 
  useEffect(() => {
   // using redux for state management    
@@ -18,7 +18,7 @@ const CatergoryHomePage = () => {
   <div className="w-full h-full lg:p-0 sm:p-3 rounded-md">
    <h1 className="lg:text-5xl text-3xl mb-5 px-2">Category</h1>
    <div className="catergory_area flex flex-nowrap overflow-x-scroll gap-2">
-    { category.length <= 0 && <CatergorySkeleton />}
+    {category.length <= 0 && <CatergorySkeleton />}
     {category &&
      category.map((e) => {
       return (
