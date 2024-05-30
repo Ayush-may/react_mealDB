@@ -4,6 +4,7 @@ const app = express();
 const cors = require("cors");
 const mealRouter = require("./routes/meal");
 const userRouter = require("./routes/user");
+const categoryRouter = require("./routes/category");
 const mongoConnect = require("./connection/mongoConnection");
 const cookieParser = require("cookie-parser");
 const { auth } = require("./middleware/auth");
@@ -34,5 +35,6 @@ app.use("/api/users", userRouter);
 // user data after logged-in
 // app.use("/api/users/profile");
 app.use("/api/meals", mealRouter);
+app.use("/api/category", categoryRouter);
 
 app.listen(PORT, () => console.log("listening on PORT : ", PORT));

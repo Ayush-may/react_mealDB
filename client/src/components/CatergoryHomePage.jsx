@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import api from "../api/apiConfig";
-import fakeDelay from "../utlities/fakeDelay";
 import CatergorySkeleton from "./CatergorySkeleton";
 import ButtonIngredient from "./ButtonIngredient";
+import { useSelector , useDispatch } from "react-redux";
+import { categoryFetch } from "../../Redux/features/category/catergorySlice";
 
 const CatergoryHomePage = () => {
- const [category, setCategory] = useState([]);
- // Api calling
+  const dispatch = useDispatch();
+  const category = useSelector(state => state.catergory.catergory || []);
+
  useEffect(() => {
-  (async () => {
-   const p = await api.getCatetoryList();
-   // fake wait
-   //  await fakeDelay(1500);
-   setCategory(p);
-  })();
+  // using redux for state management    
+  dispatch(categoryFetch());
  }, []);
+
  return (
   <div className="w-full h-full lg:p-0 sm:p-3 rounded-md">
    <h1 className="lg:text-5xl text-3xl mb-5 px-2">Category</h1>
@@ -33,8 +31,8 @@ const CatergoryHomePage = () => {
          <h1 className="text-center text-3xl font-bold my-3">
           {e.strCategory}
          </h1>
-         <Link to={"#"}>
-          <ButtonIngredient />
+         <Link to={`catergory/${e.strCategory}`}>
+            <ButtonIngredient />
          </Link>
         </div>
        </>
