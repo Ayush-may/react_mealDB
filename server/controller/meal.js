@@ -47,8 +47,19 @@ async function handleGetMealPagination(req, res) {
  }
 }
 
+async function handleGetMealById(req, res){
+    try{
+        const {id} = req.params;
+        const response = await axios.get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
+        res.status(200).json(response.data);
+    }catch(error){
+        res.status(404).json(error);
+    }
+}
+
 module.exports = {
  handleGetCategory,
  handleGetAutoSuggestion,
  handleGetMealPagination,
+ handleGetMealById,
 };

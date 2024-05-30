@@ -15,7 +15,6 @@ const ItemsContainer = () => {
     useEffect(() => {
         (async () => {
             const data = await api.getMeal(state, limitMeal);
-            await fakeDelay(2000);
             setMeal(data);
         })();
     }, []);
@@ -30,7 +29,6 @@ const ItemsContainer = () => {
                     limitMeal
                 );
                 const tempMeal = [...meal, ...data];
-                await fakeDelay(500);
                 setMeal(tempMeal);
                 setLoading(false);
             })();
@@ -40,21 +38,17 @@ const ItemsContainer = () => {
     return (
         <div className="lg:px-40 md:px-28 w-full mb-16">
             <div className="w-full h-full lg:p-0 sm:p-3 rounded-md">
-                <h1 className="lg:text-5xl text-3xl mb-5 lg:mt-10 mt-4 px-2 capitalize">
-                    Try our Meals
-                </h1>
-                <div
-                    className="items_area grid gap-2 xl:gap-4
-            grid-cols-2 
-            sm:grid-cols-3
-            md:grid-cols-4
-            xl:grid-cols-5
-            justify-center
-            w-full
-            sm:px-0
-            px-3
-            "
-                >
+                <h1 className="lg:text-5xl text-3xl mb-5 lg:mt-10 mt-4 px-2 capitalize">Try our Meals</h1>
+                <div className="items_area grid gap-2 xl:gap-4
+                                grid-cols-2 
+                                sm:grid-cols-3
+                                md:grid-cols-4
+                                xl:grid-cols-5
+                                justify-center
+                                w-full
+                                sm:px-0
+                                px-3
+                            " >
                     {meal.length <= 0 && (
                         <MealSkeletonContainer limit={limitMeal} />
                     )}
@@ -66,14 +60,9 @@ const ItemsContainer = () => {
                         onClick={() => setState((prev) => prev + 1)}
                         disabled={loading}
                     >
-                        {loading ? (
-                            <div className="animate-spin w-5 h-5 bg-white border-2 border-black rounded-sm"></div>
-                        ) : (
-                            "Load more"
-                        )}
+                        {loading ? <div className="animate-spin w-5 h-5 bg-white border-2 border-black rounded-sm"></div> : "Load more"}
                     </button>
-                    <button
-                        className="border border-slate-800 p-2 my-3"
+                    <button className="border border-slate-800 p-2 my-3"
                         onClick={() => {
                             setMeal(meal.splice(0, limitMeal));
                         }}
