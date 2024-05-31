@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { Link } from "react-router-dom";
 import api from "../api/apiConfig";
 import MealSkeletonContainer from "./MealSkeletonContainer";
 import ItemMapContainer from "./ItemMapContainer";
-import fakeDelay from "../utlities/fakeDelay";
 
 const limitMeal = 5;
 
@@ -50,8 +48,7 @@ const ItemsContainer = () => {
                                 px-3
                             " >
                     {meal.length <= 0 && (
-                        <MealSkeletonContainer limit={limitMeal} />
-                    )}
+                        <MealSkeletonContainer limit={limitMeal} />)}
                     <ItemMapContainer meal={meal} />
                 </div>
                 <div className="w-full flex gap-2 justify-center">
@@ -66,9 +63,7 @@ const ItemsContainer = () => {
                         onClick={() => {
                             setMeal(meal.splice(0, limitMeal));
                         }}
-                    >
-                        Show less
-                    </button>
+                    >Show less</button>
                 </div>
             </div>
         </div>

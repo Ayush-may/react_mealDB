@@ -1,11 +1,18 @@
 const {
- handleUserCreate,
- handleUserLogin,
- handleUserAuthCheck,
+    handleUserCreate,
+    handleUserLogin,
+    handleUserAuthCheck,
+    addToCart,
+    handleFectchCart
 } = require("../controller/user");
 const router = require("express").Router();
 
-router.post("/loginuser", handleUserLogin);
-router.post("/createuser", handleUserCreate);
+
+// ---> /api/users
+router
+    .post("/loginuser", handleUserLogin)
+    .post("/createuser", handleUserCreate)
+    .post("/addToCart", addToCart)
+    .post("/fetchCart", handleFectchCart)
 
 module.exports = router;

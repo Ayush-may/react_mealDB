@@ -1,22 +1,22 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import {  useDispatch } from 'react-redux';
-import axiosConfig  from "../../.././src/api/axiosConfig";
+import { useDispatch } from 'react-redux';
+import axiosConfig from "../../.././src/api/axiosConfig";
 
 
 // this is state
 const initialState = {
-	catergory:[]
+	catergory: []
 };
 
 // createAsyncThunk is used for fetching data and then store it into state
 export const categoryFetch = createAsyncThunk(
 	'catergory/catergoryData',
-	async()=>{
-		try{
+	async () => {
+		try {
 			const response = await axiosConfig.get("/api/meals/category");
 			// this return is acccess by extraReducers
 			return response.data;
-		}catch(error){
+		} catch (error) {
 			console.log("This is errror in categorySlice", error);
 		}
 	}
@@ -24,21 +24,21 @@ export const categoryFetch = createAsyncThunk(
 
 // created slice
 export const catergorySlice = createSlice({
-	name : "catergory",
+	name: "catergory",
 	initialState,
-	reducers : {
+	reducers: {
 		// here define reducers
-		initialApiCall : (state, action) => {
+		initialApiCall: (state, action) => {
 			state.catergory.push(action.payload);
 		},
 	},
 	// use this for createAsyncThunk
-	extraReducers : (builder) =>{
-		builder.addCase(categoryFetch.fulfilled, (state, action)=>{ 
+	extraReducers: (builder) => {
+		builder.addCase(categoryFetch.fulfilled, (state, action) => {
 			console.log("this case is running");
 			state.catergory = action.payload;
 		})
-	} 
+	}
 });
 
 // here export the reducers one by one
