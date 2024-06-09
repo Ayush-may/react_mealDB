@@ -28,8 +28,8 @@ const MealById = () => {
 				mealId, 
 				price, 
 				mealName: meal.strMeal, 
-				mealImage: meal.strMealThumb 
-				
+				mealImage: meal.strMealThumb ,
+				mealPrice : 99,
 			};
 			dispatch(updateAddCart(payload));
 		} catch (error) {
