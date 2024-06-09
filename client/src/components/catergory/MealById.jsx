@@ -23,7 +23,14 @@ const MealById = () => {
 	async function addCartApiCall() {
 		try {
 			const username = localStorage.getItem("themeal_username");
-			const payload = { username, mealId, price };
+			const payload = { 
+				username, 
+				mealId, 
+				price, 
+				mealName: meal.strMeal, 
+				mealImage: meal.strMealThumb 
+				
+			};
 			dispatch(updateAddCart(payload));
 		} catch (error) {
 			console.log(error);

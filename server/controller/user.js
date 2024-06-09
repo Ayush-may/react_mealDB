@@ -59,11 +59,11 @@ async function handleUserLogin(req, res) {
 // Update the cart
 async function addToCart(req, res) {
     try {
-        const { username, mealId, price } = req.body;
+        const { username, mealId, price, mealName, mealImage } = req.body;
         const user = await User.findOne({ username });
 
         user.cart.push({
-            mealId, price
+            mealId, price, mealName, mealImage
         });
         await user.save();
 

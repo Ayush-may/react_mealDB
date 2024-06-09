@@ -9,6 +9,7 @@ import { fetchCart } from "../Redux/features/cart/cartSlice";
 const App = () => {
     const dispatch = useDispatch();
 
+    // initial run
     React.useEffect(() => {
         const username = localStorage.getItem("themeal_username");
         dispatch(fetchCart(username));
