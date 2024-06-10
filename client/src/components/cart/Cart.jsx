@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import IncrementDecrementButton from "./IncrementDecrementButton";
 
 const Cart = () => {
     const TempCarts = useSelector(state => state.cart.cart);
@@ -7,8 +8,8 @@ const Cart = () => {
 
     const [totalPrice, setPrice] = useState(() => {
         let total = 0;
-        carts.forEach(cart =>{
-            total += Number.parseInt(cart.price);
+        carts.forEach(cart => {
+            total += Number.parseInt(cart.price) * Number.parseInt(cart.quantity);
         })
         return total;
     });
@@ -36,7 +37,7 @@ const Cart = () => {
                                     </thead>
                                     <tbody className="h-full">
                                         {carts.map(cart =>
-                                            <tr className="">
+                                            <tr className="h-full">
                                                 <td className="py-5">
                                                     <div className="flex gap-5 h-full" >
                                                         <img src={cart.mealImage} className="w-[100px] h-[100px]" />
@@ -46,7 +47,10 @@ const Cart = () => {
                                                         </span>
                                                     </div>
                                                 </td>
-                                                <td className="text-center">1</td>
+                                                {/* <td className="text-center">{cart.quantity}</td> */}
+                                                <td className="text-center flex justify-center items-center h-full">
+                                                    <IncrementDecrementButton quantity={cart.quantity} />
+                                                </td>
                                                 <td className="text-center">{cart.price}</td>
                                                 <td className="text-center">${cart.price * 1}</td>
                                             </tr>

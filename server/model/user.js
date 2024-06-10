@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
     },
     cart: [
         {
+            quantity: {
+                type: String,
+                required: true,
+            },
             mealId: {
                 type: String,
                 required: true,

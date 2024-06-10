@@ -20,7 +20,7 @@ export const updateAddCart = createAsyncThunk(
     async (payload) => {
         try {
             const response = await axiosConfig.post("api/users/addToCart", { ...payload });
-            return payload;
+            // return payload;
         } catch (error) { }
     }
 );
@@ -33,9 +33,10 @@ export const cartSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(updateAddCart.fulfilled, (state, { payload }) => {
-                state.cart.push(payload);
-            })
+            // .addCase(updateAddCart.fulfilled, (state, { payload }) => {
+            //     console.log(payload);
+            //     state.cart.push(payload);
+            // })
             .addCase(fetchCart.fulfilled, (state, { payload }) => {
                 state.cart = payload;
             })

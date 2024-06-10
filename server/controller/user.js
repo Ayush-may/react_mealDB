@@ -60,18 +60,35 @@ async function handleUserLogin(req, res) {
 async function addToCart(req, res) {
     try {
         const { username, mealId, price, mealName, mealImage } = req.body;
-        const user = await User.findOne({ username });
 
+        //  check if the item is already added or not in cart , if it is added then only update the quantity
+        const checkCart = await User.findOne({ username, cart: { $elemMatch: { mealId } } });
+        if (checkCart) return await handleUpdateQuantity(req, res);
+
+        const user = await User.findOne({ username });
         user.cart.push({
-            mealId, price, mealName, mealImage
+            quantity: 1, mealId, price, mealName, mealImage
         });
+        console.log(user);
         await user.save();
 
         res.status(200).end("OK");
     } catch (error) { }
 }
 
+async function handleUpdateQuantity(req, res) {
+    try {
+        const { username, mealId } = req.body;
 
+        const checkCart = await User.findOne({ username, cart: { $elemMatch: { mealId } } });
+        if (!checkCart) return res.status("400").end("bad request");
+
+        const cartMealQuantity = Number.parseInt(checkCart.cart.find(() => mealId).quantity);
+        checkCart.cart.find(() => mealId).quantity = cartMealQuantity + 1;
+        await checkCart.save();
+        return res.status(200).end("OK");
+    } catch (error) { }
+}
 
 async function handleFectchCart(req, res) {
     try {
@@ -80,12 +97,11 @@ async function handleFectchCart(req, res) {
         res.status(200).json(user.cart);
     } catch (error) { }
 }
-async function handleUserAuthCheck() { }
 
 module.exports = {
     handleUserCreate,
     handleUserLogin,
-    handleUserAuthCheck,
     addToCart,
     handleFectchCart,
+    handleUpdateQuantity,
 };
