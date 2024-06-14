@@ -1,8 +1,13 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { incrementCartItemByMealId } from '../../../Redux/features/cart/cartSlice';
 
-const IncrementDecrementButton = ({ quantity }) => {
-    const handleIncrement = () => { };
+const IncrementDecrementButton = ({ quantity, mealId }) => {
+    const dispatch = useDispatch();
+    
+    const handleIncrement = () => {
+        dispatch(incrementCartItemByMealId({ mealId }));
+    };
     const handleDecrement = () => { };
 
     return (

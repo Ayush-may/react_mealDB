@@ -9,6 +9,7 @@ const MealById = () => {
 	const [loading, setLoading] = React.useState(true);
 	const param = useParams();
 	const mealId = param.mealId;
+	//Price is hard-coded 
 	const price = 99;
 	const dispatch = useDispatch();
 
@@ -23,13 +24,14 @@ const MealById = () => {
 	async function addCartApiCall() {
 		try {
 			const username = localStorage.getItem("themeal_username");
-			const payload = { 
-				username, 
-				mealId, 
-				price, 
-				mealName: meal.strMeal, 
-				mealImage: meal.strMealThumb ,
-				mealPrice : 99,
+			const payload = {
+				typeOfReq: "INCREMENT",
+				username,
+				mealId,
+				price,
+				mealName: meal.strMeal,
+				mealImage: meal.strMealThumb,
+				mealPrice: 99,
 			};
 			dispatch(updateAddCart(payload));
 		} catch (error) {

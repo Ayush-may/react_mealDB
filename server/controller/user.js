@@ -69,24 +69,48 @@ async function addToCart(req, res) {
         user.cart.push({
             quantity: 1, mealId, price, mealName, mealImage
         });
-        console.log(user);
         await user.save();
 
         res.status(200).end("OK");
     } catch (error) { }
 }
 
+async function DecrementCartItemByMealId(checkCart, mealId) {
+    checkCart.cart.map((cart) => {
+        if (cart.mealId === mealId && Number(cart.quantity) !== 0) {
+            const cartQuantity = Number.parseInt(cart.quantity) + 1;
+            cart.quantity = cartQuantity + "";
+        }
+    })
+    await checkCart.save();
+}
+
+async function incrementCartItemByMealId(checkCart, mealId) {
+    checkCart.cart.map((cart) => {
+        if (cart.mealId === mealId) {
+            const cartQuantity = Number.parseInt(cart.quantity) + 1;
+            cart.quantity = cartQuantity + "";
+        }
+    })
+    await checkCart.save();
+}
+
 async function handleUpdateQuantity(req, res) {
     try {
-        const { username, mealId } = req.body;
+        const { username, mealId, typeOfReq } = req.body;
 
         const checkCart = await User.findOne({ username, cart: { $elemMatch: { mealId } } });
         if (!checkCart) return res.status("400").end("bad request");
 
-        const cartMealQuantity = Number.parseInt(checkCart.cart.find(() => mealId).quantity);
-        checkCart.cart.find(() => mealId).quantity = cartMealQuantity + 1;
-        await checkCart.save();
-        return res.status(200).end("OK");
+        switch (typeOfReq.toUpperCase()) {
+            case "INCREMENT":
+                await incrementCartItemByMealId(checkCart, mealId);
+                break;
+            case "DECREMENT":
+                break;
+        }
+
+        res.status(200).end("OK");
     } catch (error) { }
 }
 

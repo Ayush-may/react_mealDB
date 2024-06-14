@@ -13,7 +13,12 @@ const NavBar = () => {
     );
 
     // redux logics
-    const cartItems = useSelector(state => state.cart.cart.length);
+    // const cartItems = useSelector(state => state.cart.cart.length);
+    const cartItemsTemp = useSelector(state => state.cart.cart.length);
+    const [cartItems, setCartItems] = useState(cartItemsTemp);
+    useEffect(() => {
+        setCartItems(cartItemsTemp);
+    }, [cartItemsTemp]);
 
     // if no one is logged in
     const { isAuth, setAuth } = useContext(AuthContext);

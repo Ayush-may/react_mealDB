@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axiosConfig from '../../../src/api/axiosConfig';
+import { findAndIncrementCartItemByMealId } from './utils';
 
 const initialState = {
     cart: [{}]
@@ -20,16 +21,26 @@ export const updateAddCart = createAsyncThunk(
     async (payload) => {
         try {
             const response = await axiosConfig.post("api/users/addToCart", { ...payload });
-            // return payload;
         } catch (error) { }
     }
 );
+
+export const incrementCartItemByMealId = createAsyncThunk(
+    "cart/incrementCartItemByMealId",
+    async (payload) => {
+        try { } catch (error) { }
+    }
+)
 
 export const cartSlice = createSlice({
     name: "cart",
     initialState,
     reducers: {
-        addToCart: (state, { payload }) => { }
+        addToCart: (state, { payload }) => { },
+        // incrementCartItemByMealId: (state, { payload }) => {
+        //     findAndIncrementCartItemByMealId(state.cart, payload.mealId);
+        //     dispatch(updateAddCart({ mealId: payload.mealId, typeOfReq: "INCREMENT" }));
+        // }
     },
     extraReducers: (builder) => {
         builder
@@ -39,6 +50,9 @@ export const cartSlice = createSlice({
             // })
             .addCase(fetchCart.fulfilled, (state, { payload }) => {
                 state.cart = payload;
+            })
+            .addCase(incrementCartItemByMealId.fulfilled, (state) => {
+                findAndIncrementCartItemByMealId(state.cart, payload.mealId); 
             })
     }
 });
