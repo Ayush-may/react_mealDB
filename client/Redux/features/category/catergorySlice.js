@@ -35,7 +35,6 @@ export const catergorySlice = createSlice({
 	// use this for createAsyncThunk
 	extraReducers: (builder) => {
 		builder.addCase(categoryFetch.fulfilled, (state, action) => {
-			console.log("this case is running");
 			state.catergory = action.payload;
 		})
 	}

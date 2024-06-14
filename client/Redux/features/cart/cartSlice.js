@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axiosConfig from '../../../src/api/axiosConfig';
-import { findAndIncrementCartItemByMealId } from './utils';
+import { findAndDecrementCartItemByMealId, findAndIncrementCartItemByMealId } from './utils';
 
 const initialState = {
-    cart: [{}]
+    cart: []
 };
 
 export const fetchCart = createAsyncThunk(
@@ -25,10 +25,12 @@ export const updateAddCart = createAsyncThunk(
     }
 );
 
-export const incrementCartItemByMealId = createAsyncThunk(
-    "cart/incrementCartItemByMealId",
+export const updateCartItemByMealIdInDB = createAsyncThunk(
+    "cart/incrementCartItemByMealIdInDB",
     async (payload) => {
-        try { } catch (error) { }
+        try {
+            const response = await axiosConfig.post("api/users/updateQuantity", { ...payload });
+        } catch (error) { }
     }
 )
 
@@ -36,28 +38,35 @@ export const cartSlice = createSlice({
     name: "cart",
     initialState,
     reducers: {
-        addToCart: (state, { payload }) => { },
-        // incrementCartItemByMealId: (state, { payload }) => {
-        //     findAndIncrementCartItemByMealId(state.cart, payload.mealId);
-        //     dispatch(updateAddCart({ mealId: payload.mealId, typeOfReq: "INCREMENT" }));
-        // }
+        /* This method is used for updating the quantity of a cart by 1 and
+            then updating the quantity in DB but this one is 
+            done from another async method `incrementCartItemByMealIdInDB` 
+            This is called seperatly after calling this below methods */
+        incrementCartItemByMealId: (state, { payload }) => {
+            findAndIncrementCartItemByMealId(state.cart, payload.mealId);
+        },
+        decrementCartItemByMealId: (state, { payload }) => {
+            findAndDecrementCartItemByMealId(state.cart, payload.mealId);
+        }
     },
     extraReducers: (builder) => {
         builder
-            // .addCase(updateAddCart.fulfilled, (state, { payload }) => {
-            //     console.log(payload);
-            //     state.cart.push(payload);
-            // })
+            /* 
+                This method is for fetching the cart items from DB for Logged in user and updating the state of cart
+            */
             .addCase(fetchCart.fulfilled, (state, { payload }) => {
                 state.cart = payload;
             })
-            .addCase(incrementCartItemByMealId.fulfilled, (state) => {
-                findAndIncrementCartItemByMealId(state.cart, payload.mealId); 
-            })
+            /*
+                If required then write the logic here for `Cart Item Increment by 1 in DB`
+            */
+            .addCase(updateCartItemByMealIdInDB.fulfilled, (state, { payload }) => { })
     }
 });
 
 export const {
-    addToCart,
+    // addToCart,
+    incrementCartItemByMealId,
+    decrementCartItemByMealId,
 } = cartSlice.actions;
 export default cartSlice.reducer;

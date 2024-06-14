@@ -95,18 +95,29 @@ async function incrementCartItemByMealId(checkCart, mealId) {
     await checkCart.save();
 }
 
+async function decrementCartItemByMealIds(checkCart, mealId) {
+    checkCart.cart.map((cart) => {
+        if (cart.mealId === mealId) {
+            const cartQuantity = Number.parseInt(cart.quantity) - 1;
+            cart.quantity = cartQuantity + "";
+        }
+    })
+    await checkCart.save();
+}
+
 async function handleUpdateQuantity(req, res) {
     try {
         const { username, mealId, typeOfReq } = req.body;
 
         const checkCart = await User.findOne({ username, cart: { $elemMatch: { mealId } } });
-        if (!checkCart) return res.status("400").end("bad request");
+        if (!checkCart) return res.status(400).end("bad request");
 
         switch (typeOfReq.toUpperCase()) {
             case "INCREMENT":
                 await incrementCartItemByMealId(checkCart, mealId);
                 break;
             case "DECREMENT":
+                await decrementCartItemByMealIds(checkCart, mealId);
                 break;
         }
 

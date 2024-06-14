@@ -1,14 +1,30 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { incrementCartItemByMealId } from '../../../Redux/features/cart/cartSlice';
+import { decrementCartItemByMealId, incrementCartItemByMealId, updateCartItemByMealIdInDB,  } from '../../../Redux/features/cart/cartSlice';
 
 const IncrementDecrementButton = ({ quantity, mealId }) => {
     const dispatch = useDispatch();
-    
+    const username = localStorage.getItem("themeal_username");  
+
     const handleIncrement = () => {
-        dispatch(incrementCartItemByMealId({ mealId }));
+        const payload = {
+            mealId, username,
+            typeOfReq: "INCREMENT",
+        };
+        if (dispatch(incrementCartItemByMealId(payload)) && dispatch(updateCartItemByMealIdInDB(payload))) {
+            alert("INCREMENTED");
+        }
     };
-    const handleDecrement = () => { };
+
+    const handleDecrement = () => {
+        const payload = {
+            mealId, username,
+            typeOfReq: "DECREMENT",
+        };
+        if (decrementCartItemByMealId(payload) && dispatch(updateCartItemByMealIdInDB(payload))) {
+            alert("DECREMENTED");
+        }
+    };
 
     return (
         <div className="w-auto h-fit flex justify-center items-center bg-gray-200 rounded-md shadow-sm border" >

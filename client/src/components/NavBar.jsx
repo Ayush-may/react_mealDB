@@ -13,7 +13,6 @@ const NavBar = () => {
     );
 
     // redux logics
-    // const cartItems = useSelector(state => state.cart.cart.length);
     const cartItemsTemp = useSelector(state => state.cart.cart.length);
     const [cartItems, setCartItems] = useState(cartItemsTemp);
     useEffect(() => {

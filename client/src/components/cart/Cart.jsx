@@ -4,16 +4,21 @@ import IncrementDecrementButton from "./IncrementDecrementButton";
 import CartTableImageDisplayer from "./CartTableImageDisplayer";
 
 const Cart = () => {
-    const TempCarts = useSelector(state => state.cart.cart);
-    const [carts, setCarts] = useState(() => TempCarts);
+    const tempCarts = useSelector(state => state.cart.cart);
+    const [carts, setCarts] = useState([]);
+    const [totalPrice, setPrice] = useState(0);
 
-    const [totalPrice, setPrice] = useState(() => {
+    useEffect(() => {
+        setCarts(tempCarts);
+
         let total = 0;
         carts.forEach(cart => {
             total += Number.parseInt(cart.price) * Number.parseInt(cart.quantity);
         })
-        return total;
-    });
+
+        setPrice(total);
+        console.log(total);
+    }, [tempCarts]);
 
     return (
         <>
@@ -31,15 +36,17 @@ const Cart = () => {
                             <section className="grid grid-cols-[1fr,300px] max-md:grid-cols-1">
                                 <table className="table w-full table-fixed order-1 max-md:order-2">
                                     <thead className=" text-gray-400 text-xl capitalize">
-                                        <th className="text-start max-w-[150px] font-[400]" >product details</th>
-                                        <th className="text-center font-[400]"></th>
-                                        <th className="text-center font-[400]">Quantity</th>
-                                        <th className="text-center font-[400]">price</th>
-                                        <th className="text-center font-[400]">Total</th>
+                                        <tr>
+                                            <th className="text-start max-w-[150px] font-[400]" >product details</th>
+                                            <th className="text-center font-[400]"></th>
+                                            <th className="text-center font-[400]">Quantity</th>
+                                            <th className="text-center font-[400]">price</th>
+                                            <th className="text-center font-[400]">Total</th>
+                                        </tr>
                                     </thead>
                                     <tbody className="h-full">
                                         {carts.map(cart =>
-                                            <tr className="h-full">
+                                            <tr className="h-full" key={cart.mealId}>
                                                 <td className="py-3" colSpan={2}>
                                                     <CartTableImageDisplayer mealImage={cart.mealImage} mealName={cart.mealName} mealId={cart.mealId} />
                                                 </td>
