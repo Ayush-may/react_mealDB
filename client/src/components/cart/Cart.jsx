@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import IncrementDecrementButton from "./IncrementDecrementButton";
 import CartTableImageDisplayer from "./CartTableImageDisplayer";
+import {clearCartFromDB} from "../../../Redux/features/cart/cartSlice.js";
 
 const Cart = () => {
 	// const tempCarts = useSelector(state => state.cart.cart);
 	const [tempCarts, setTempCarts] = useState(useSelector(state => state.cart.cart));
 	const [carts, setCarts] = useState([]);
 	const [totalPrice, setPrice] = useState(0);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		setCarts(tempCarts);
@@ -20,9 +22,12 @@ const Cart = () => {
 				total += Number.parseInt(cart.price) * Number.parseInt(cart.quantity);
 			})
 			setPrice(total);
-			console.log(total);
 		}
 	}, [carts])
+
+	function handlePayButton(){
+		dispatch(clearCartFromDB());
+	}
 
 	return (
 		<>
@@ -77,6 +82,7 @@ const Cart = () => {
 										<span className="ms-auto">${totalPrice}</span>
 									</h5>
 									<button
+										onClick={handlePayButton}
 										className="p-2 bg-slate-600 rounded-md w-full shadow-sm mt-5 font-bold text-white">Pay
 										${totalPrice}</button>
 								</section>

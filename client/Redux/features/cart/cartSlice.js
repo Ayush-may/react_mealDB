@@ -1,6 +1,10 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axiosConfig from '../../../src/api/axiosConfig';
-import {findAndDecrementCartItemByMealId, findAndIncrementCartItemByMealId} from './utils';
+import {
+	findAndDecrementCartItemByMealId,
+	findAndIncrementCartItemByMealId,
+	pushItemintoCart,
+} from './utils';
 
 const initialState = {
 	cart: []
@@ -31,13 +35,28 @@ export const updateAddCart = createAsyncThunk(
 
 export const updateCartItemByMealIdInDB = createAsyncThunk(
 	"cart/incrementCartItemByMealIdInDB",
-	async (payload) => {
+	async () => {
 		try {
 			const response = await axiosConfig.post("api/users/updateQuantity", {...payload});
 		} catch (error) {
 		}
 	}
 )
+
+/*
+	Call this when user order everything from the cart
+	After calling , clear the cart and from database also
+ */
+export const clearCartFromDB = createAsyncThunk(
+	"order/clearCartFromDB",
+	async function (payload) {
+		try {
+			const response = await axiosConfig.post("api/cart/cartToOrder");
+			return response;
+		} catch (error) {
+		}
+	}
+);
 
 export const cartSlice = createSlice({
 	name: "cart",
@@ -64,15 +83,7 @@ export const cartSlice = createSlice({
 			.addCase(updateCartItemByMealIdInDB.fulfilled, (state, {payload}) => {
 			})
 			.addCase(updateAddCart.fulfilled, (state, {payload}) => {
-				const existingMeal = state.cart.find(c => c.mealId == payload.mealId);
-
-				if (existingMeal)
-					existingItem.quantity = (parseInt(existingItem.quantity) || 0) + (parseInt(payload.quantity) || 1);
-				else
-					state.cart.push({
-						...payload,
-						quantity: "1"
-					});
+				pushItemintoCart(state.cart, payload);
 			})
 	}
 });
