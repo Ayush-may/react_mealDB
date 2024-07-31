@@ -3,7 +3,8 @@ const {
     handleUserLogin,
     addToCart,
     handleFectchCart,
-    handleUpdateQuantity
+    handleUpdateQuantity,
+    handleForgetPass
 } = require("../controller/user");
 const router = require("express").Router();
 
@@ -15,5 +16,6 @@ router
     .post("/addToCart", addToCart)
     .post("/fetchCart", handleFectchCart)
     .post("/updateQuantity", handleUpdateQuantity)
+    .post("/forgetpass", handleForgetPass)
 
 module.exports = router;

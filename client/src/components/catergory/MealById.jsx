@@ -59,8 +59,8 @@ const MealById = () => {
 										<Link to={`${meal.strSource}`} className="rounded-lg bg-slate-300 w-full flex items-center" ><button className="text-center w-full" >Source</button></Link>
 									</div>
 									<button
-										className="border rounded-lg py-4 bg-slate-800 text-white"
-										onClick={() => addCartApiCall()}
+											className="border rounded-lg py-4 bg-slate-800 text-white"
+											onClick={() => addCartApiCall()}
 									>Add to cart</button>
 									<h3 className="text-5xl font-semibold max-sm:text-center" >price : ${price}</h3>
 								</div>
