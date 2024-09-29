@@ -20,9 +20,18 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
-mongoConnect(`mongodb://127.0.0.1:27017/ingredient_ecommerce`).then(() =>
+// mongoConnect(`mongodb://127.0.0.1:27017/ingredient_ecommerce`).then(() =>
+//  console.log("mongoDb is connected")
+// );
+
+const mongoUser = encodeURIComponent(process.env.MONGO_USER);
+const mongoPass = encodeURIComponent(process.env.MONGO_PASS);
+
+mongoConnect(`mongodb+srv://${mongoUser}:${mongoPass}@themeal.f86ot.mongodb.net/?retryWrites=true&w=majority&appName=theMeal`).then(() =>
  console.log("mongoDb is connected")
 );
+
+
 
 // auth the user
 app.get("/authuser", auth, (req, res) => {
