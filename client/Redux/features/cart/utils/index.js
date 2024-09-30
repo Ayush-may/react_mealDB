@@ -1,6 +1,7 @@
 export function findAndIncrementCartItemByMealId(carts, mealId) {
 	carts.map(cart => {
 		if (cart.mealId === mealId) {
+			console.log(cart);
 			incrementAndDecrementCartItemByOne(cart, "INCREMENT");
 		}
 	})
@@ -31,9 +32,10 @@ export function pushItemintoCart(state, payload) {
 	const existingItem = state.cart.find(c => c.mealId == payload.mealId);
 	if (existingItem)
 		existingItem.quantity = (parseInt(existingItem.quantity) || 0) + (parseInt(payload.quantity) || 1);
-	else
+	else {
 		state.cart.push({
 			...payload,
 			quantity: "1"
 		});
+	}
 }

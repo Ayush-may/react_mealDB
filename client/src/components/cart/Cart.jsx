@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import IncrementDecrementButton from "./IncrementDecrementButton";
 import CartTableImageDisplayer from "./CartTableImageDisplayer";
-import {clearCartFromDB} from "../../../Redux/features/cart/cartSlice.js";
+import { clearCartFromDB } from "../../../Redux/features/cart/cartSlice.js";
 
 const Cart = () => {
 	// const tempCarts = useSelector(state => state.cart.cart);
@@ -25,7 +25,7 @@ const Cart = () => {
 		}
 	}, [carts])
 
-	function handlePayButton(){
+	function handlePayButton() {
 		dispatch(clearCartFromDB());
 	}
 
@@ -46,31 +46,31 @@ const Cart = () => {
 							<section className="grid grid-cols-[1fr,300px] max-md:grid-cols-1">
 								<table className="table w-full table-fixed order-1 max-md:order-2">
 									<thead className=" text-gray-400 text-xl capitalize">
-									<tr>
-										<th className="text-start max-w-[150px] font-[400]">product details</th>
-										<th className="text-center font-[400]"></th>
-										<th className="text-center font-[400]">Quantity</th>
-										<th className="text-center font-[400]">price</th>
-										<th className="text-center font-[400]">Total</th>
-									</tr>
+										<tr>
+											<th className="text-start max-w-[150px] font-[400]">product details</th>
+											<th className="text-center font-[400]"></th>
+											<th className="text-center font-[400]">Quantity</th>
+											<th className="text-center font-[400]">price</th>
+											<th className="text-center font-[400]">Total</th>
+										</tr>
 									</thead>
 									<tbody className="h-full">
-									{
-										carts.map(cart =>
-											<tr className="h-full" key={cart.mealId}>
-												<td className="py-3" colSpan={2}>
-													<CartTableImageDisplayer mealImage={cart.mealImage}
-													                         mealName={cart.mealName}
-													                         mealId={cart.mealId}/>
-												</td>
-												<td className="text-center flex justify-center items-center h-full">
-													<IncrementDecrementButton quantity={cart.quantity}
-													                          mealId={cart.mealId}/>
-												</td>
-												<td className="text-center">{cart.price}</td>
-												<td className="text-center">${cart.price * 1}</td>
-											</tr>
-										)}
+										{
+											carts.map(cart =>
+												<tr className="h-full" key={cart.mealId}>
+													<td className="py-3" colSpan={2}>
+														<CartTableImageDisplayer mealImage={cart.mealImage}
+															mealName={cart.mealName}
+															mealId={cart.mealId} />
+													</td>
+													<td className="text-center flex justify-center items-center h-full">
+														<IncrementDecrementButton quantity={cart.quantity}
+															mealId={cart.mealId} />
+													</td>
+													<td className="text-center">{cart.price}</td>
+													<td className="text-center">${cart.price * 1}</td>
+												</tr>
+											)}
 									</tbody>
 								</table>
 								<section

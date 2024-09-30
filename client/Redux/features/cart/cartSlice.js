@@ -83,7 +83,7 @@ export const cartSlice = createSlice({
 			.addCase(updateCartItemByMealIdInDB.fulfilled, (state, {payload}) => {
 			})
 			.addCase(updateAddCart.fulfilled, (state, {payload}) => {
-				pushItemintoCart(state.cart, payload);
+				pushItemintoCart(state, payload);
 			})
 	}
 });

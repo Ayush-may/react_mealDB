@@ -6,6 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCart } from "../../Redux/features/cart/cartSlice";
 
 const NavBar = () => {
+    // if no one is logged in
+    const { isAuth, setAuth } = useContext(AuthContext);
+    useEffect(() => {
+        if (!isAuth) naviagate("/");
+    }, [isAuth]);
+
     const location = useLocation();
     const naviagate = useNavigate();
     const [name, setName] = useState(() =>
@@ -15,7 +21,7 @@ const NavBar = () => {
     // redux logics
     const cartItemsTemp = useSelector(state => {
         let cnt = 0;
-        state.cart.cart.map(c => cnt+= parseInt(c.quantity))
+        state.cart.cart.map(c => cnt += parseInt(c.quantity))
         return cnt;
     });
     const [cartItems, setCartItems] = useState(cartItemsTemp);
@@ -23,11 +29,6 @@ const NavBar = () => {
         setCartItems(cartItemsTemp);
     }, [cartItemsTemp]);
 
-    // if no one is logged in
-    const { isAuth, setAuth } = useContext(AuthContext);
-    useEffect(() => {
-        if (!isAuth) naviagate("/");
-    }, []);
 
     return (
         <>
@@ -47,6 +48,7 @@ const NavBar = () => {
                                 document.cookie =
                                     "uid =; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
                                 setAuth(false);
+                                window.location.reload();
                             }}
                         >
                             Log out

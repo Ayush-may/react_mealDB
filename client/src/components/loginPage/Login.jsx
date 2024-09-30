@@ -1,11 +1,11 @@
-import React, {useContext, useState, useEffect} from "react";
+import React, { useContext, useState, useEffect } from "react";
 import TheMealText from "../TheMealText";
-import {Link, json, useNavigate} from "react-router-dom";
+import { Link, json, useNavigate } from "react-router-dom";
 import Footer from "../Footer";
-import {useForm} from "react-hook-form";
-import {toast} from "react-toastify";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import axiosConfig from "../../api/axiosConfig";
-import {AuthContext} from "../authProvider/AuthProvider";
+import { AuthContext } from "../authProvider/AuthProvider";
 
 const usernameValidations = {
 	required: "username is required",
@@ -38,29 +38,34 @@ const Login = () => {
 		handleSubmit,
 		setError,
 		watch,
-		formState: {errors, isSubmitting},
+		formState: { errors, isSubmitting },
 	} = useForm();
 	const navigate = useNavigate();
 	const [isForget, setIsForget] = useState(false);
 
 	//  check if user is present or not
-	const {isAuth, setAuth} = useContext(AuthContext);
+	const { isAuth, setAuth } = useContext(AuthContext);
 	useEffect(() => {
 		if (isAuth) navigate("/themeal");
 	});
 
 	const onSubmit = async (data) => {
 		try {
-			const response = axiosConfig.post("/api/users/loginuser", {
+			const response = await axiosConfig.post("/api/users/loginuser", {
 				data: {
 					username: watch("username"),
 					password: watch("password"),
 				},
 			});
-			localStorage.setItem("themeal_username", watch("username"));
-			setAuth(true);
+
+			if (response.statusText === "OK") {
+				localStorage.setItem("themeal_username", watch("username"));
+				setAuth(true);
+			} else {
+				throw errors;
+			}
 		} catch (error) {
-			console.log("something went wrong");
+			alert("Something went wrong!");
 		}
 	};
 
@@ -96,14 +101,21 @@ const Login = () => {
 
 	const handleForgetPasswordSubmit = async (data) => {
 		try {
-			const response =await axiosConfig.post("/api/users/forgetpass", {
+			const response = await axiosConfig.post("/api/users/forgetpass", {
 				data: {
 					username: data.username,
 					password: data.newpassword,
 				},
 			});
+
+			if (response.statusText === "OK") {
+				alert("Password changed!")
+			} else {
+				throw errors;
+			}
+
 		} catch (error) {
-			console.log("something went wrong");
+			alert("something went wrong");
 		}
 	}
 
@@ -112,7 +124,7 @@ const Login = () => {
 			<div className="w-full h-full flex justify-center items-center border border-black">
 				<div className="lg:min-w-[400px] w-80 md:translate-y-[-30%]">
 					<div className="text-center text-4xl">
-						<TheMealText style1={"text-5xl"} style2={"uppercase font-bold"}/>
+						<TheMealText style1={"text-5xl"} style2={"uppercase font-bold"} />
 					</div>
 
 					{
@@ -131,7 +143,7 @@ const Login = () => {
 									placeholder="username"
 									className="py-3 ps-5 rounded-full border w-full"
 								/>
-								<UsernameError/>
+								<UsernameError />
 								<input
 									{...register("password", passwordValidations)}
 									autoComplete="off"
@@ -140,7 +152,7 @@ const Login = () => {
 									placeholder="password"
 									className="py-3 ps-5 rounded-full border w-full"
 								/>
-								<PasswordError/>
+								<PasswordError />
 								<button
 									type="submit"
 									className="w-full bg-slate-800 text-white py-3 rounded-full"
@@ -178,7 +190,7 @@ const Login = () => {
 									placeholder="username"
 									className="py-3 ps-5 rounded-full border w-full"
 								/>
-								<UsernameError/>
+								<UsernameError />
 								<input
 									{...register("newpassword", newPasswordValidation)}
 									autoComplete="off"
@@ -205,7 +217,7 @@ const Login = () => {
 					}
 				</div>
 			</div>
-			<Footer/>
+			<Footer />
 		</>
 	);
 };

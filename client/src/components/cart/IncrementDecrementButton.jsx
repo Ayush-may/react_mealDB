@@ -12,7 +12,7 @@ const IncrementDecrementButton = ({ quantity, mealId }) => {
             typeOfReq: "INCREMENT",
         };
         if (dispatch(incrementCartItemByMealId(payload)) && dispatch(updateCartItemByMealIdInDB(payload))) {
-            alert("INCREMENTED");
+            // alert("INCREMENTED");
         }
     };
 
