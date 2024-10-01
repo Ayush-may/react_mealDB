@@ -26,7 +26,8 @@ const Cart = () => {
 	}, [carts])
 
 	function handlePayButton() {
-		dispatch(clearCartFromDB());
+		dispatch(clearCartFromDB(localStorage.getItem("themeal_username")));
+		alert("Ordered!");
 	}
 
 	return (
@@ -42,7 +43,7 @@ const Cart = () => {
 				{
 					carts.length > 0 &&
 					<>
-						<main className="w-full grid grid-cols-[minmax(300px,1200px)] justify-center">
+						<main className="w-full grid grid-cols-[minmax(300px,``1200px)] justify-center">
 							<section className="grid grid-cols-[1fr,300px] max-md:grid-cols-1">
 								<table className="table w-full table-fixed order-1 max-md:order-2">
 									<thead className=" text-gray-400 text-xl capitalize">

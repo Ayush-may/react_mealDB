@@ -36,6 +36,30 @@ const userSchema = new mongoose.Schema({
             }
         },
     ],
+    order: [
+        {
+            quantity: {
+                type: String,
+                required: true,
+            },
+            mealId: {
+                type: String,
+                required: true,
+            },
+            mealImage: {
+                type: String,
+                required: true,
+            },
+            mealName: {
+                type: String,
+                required: true,
+            },
+            price: {
+                type: String,
+                required: true
+            }
+        },
+    ],
     // TODO : Add more entity for card and order
 });
 

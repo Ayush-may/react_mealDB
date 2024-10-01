@@ -33,13 +33,13 @@ const newPasswordValidation = {
 };
 
 const Login = () => {
-	const {
-		register,
-		handleSubmit,
-		setError,
-		watch,
-		formState: { errors, isSubmitting },
-	} = useForm();
+		const {
+			register,
+			handleSubmit,
+			setError,
+			watch,
+			formState: { errors, isSubmitting },
+		} = useForm();
 	const navigate = useNavigate();
 	const [isForget, setIsForget] = useState(false);
 
