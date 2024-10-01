@@ -29,6 +29,11 @@ const NavBar = () => {
         setCartItems(cartItemsTemp);
     }, [cartItemsTemp]);
 
+    const orderItemsFromRedux = useSelector(state => state.order.order.length);
+    const [orderItems, setOrderItems] = useState(0);
+    useEffect(() => {
+        setOrderItems(orderItemsFromRedux);
+    }, [orderItemsFromRedux])
 
     return (
         <>
@@ -81,10 +86,13 @@ const NavBar = () => {
                         end
                         className={({ isActive }) =>
                             isActive
-                                ? "text-red-400  p-1"
-                                : "hover:outline hover:outline-1  p-1"
+                                ? "text-red-400 p-1 relative"
+                                : "hover:outline hover:outline-1 p-1 relative"
                         }
                     >
+                        <span className="absolute bg-lime-400 text-black w-[25px] h-[25px] top-[-10px] right-[-20px] rounded-full flex items-center justify-center" >
+                            {orderItems == 0 ? "0" : orderItems}
+                        </span>
                         Order
                     </NavLink>
                     <NavLink

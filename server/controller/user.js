@@ -5,10 +5,10 @@ const jwt = require("jsonwebtoken");
 
 async function handleUserCreate(req, res) {
 	try {
-		const {username, password} = req.body.data;
+		const { username, password } = req.body.data;
 
 		// check if it is already present or not
-		const data = await User.findOne({username});
+		const data = await User.findOne({ username });
 		if (data) return res.status(409).send("user is already present");
 
 		// hash the password
@@ -16,12 +16,12 @@ async function handleUserCreate(req, res) {
 		const hashPassword = await bcrypt.hash(password, genSalt);
 
 		// generate the jwt token and logged in
-		const token = jwt.sign({username}, process.env.JSONKEY);
+		const token = jwt.sign({ username }, process.env.JSONKEY);
 		res.cookie("uid", token);
 
 		// save the user and return from here
-		(await User.create({username, password: hashPassword})).save();
-		return res.status(200).send("The user is created !");
+		(await User.create({ username, password: hashPassword })).save();
+		res.status(200).send("The user is created !");
 	} catch (error) {
 		// in-case something happened
 		res.status(400).send("something went wrong");
@@ -32,10 +32,10 @@ async function handleUserCreate(req, res) {
 async function handleUserLogin(req, res) {
 	try {
 		// getting the values
-		const {username, password} = req.body.data;
+		const { username, password } = req.body.data;
 
 		// check if user is present or not in database
-		const data = await User.findOne({username});
+		const data = await User.findOne({ username });
 		if (!data) return res.status(400).send("user is not available");
 
 		// if user is available then match the hashpassword with current password
@@ -43,7 +43,7 @@ async function handleUserLogin(req, res) {
 		if (!isHashTrue) return res.status(400).send("password is wrong");
 
 		// add token to the browser
-		const token = jwt.sign({username}, process.env.JSONKEY);
+		const token = jwt.sign({ username }, process.env.JSONKEY);
 		res.cookie("uid", token);
 
 		// everything went good
@@ -57,13 +57,13 @@ async function handleUserLogin(req, res) {
 // Update the cart
 async function addToCart(req, res) {
 	try {
-		const {username, mealId, price, mealName, mealImage} = req.body;
+		const { username, mealId, price, mealName, mealImage } = req.body;
 
 		//  check if the item is already added or not in cart , if it is added then only update the quantity
-		const checkCart = await User.findOne({username, cart: {$elemMatch: {mealId}}});
+		const checkCart = await User.findOne({ username, cart: { $elemMatch: { mealId } } });
 		if (checkCart) return await handleUpdateQuantity(req, res);
 
-		const user = await User.findOne({username});
+		const user = await User.findOne({ username });
 		user.cart.push({
 			quantity: 1, mealId, price, mealName, mealImage
 		});
@@ -106,9 +106,9 @@ async function decrementCartItemByMealIds(checkCart, mealId) {
 
 async function handleUpdateQuantity(req, res) {
 	try {
-		const {username, mealId, typeOfReq} = req.body;
+		const { username, mealId, typeOfReq } = req.body;
 
-		const checkCart = await User.findOne({username, cart: {$elemMatch: {mealId}}});
+		const checkCart = await User.findOne({ username, cart: { $elemMatch: { mealId } } });
 		if (!checkCart) return res.status(400).end("bad request");
 
 		switch (typeOfReq.toUpperCase()) {
@@ -127,8 +127,8 @@ async function handleUpdateQuantity(req, res) {
 
 async function handleFectchCart(req, res) {
 	try {
-		const {username} = req.body;
-		const user = await User.findOne({username});
+		const { username } = req.body;
+		const user = await User.findOne({ username });
 		res.status(200).json(user.cart);
 	} catch (error) {
 	}
@@ -136,10 +136,10 @@ async function handleFectchCart(req, res) {
 
 async function handleForgetPass(req, res) {
 	try {
-		const {username, password} = req.body.data;
+		const { username, password } = req.body.data;
 
 		// check if it is already present or not
-		const data = await User.findOne({username});
+		const data = await User.findOne({ username });
 		if (!data) return res.send("user is not present");
 
 		// hash the password
@@ -148,13 +148,25 @@ async function handleForgetPass(req, res) {
 
 		// update password
 		await User.updateOne(
-			{username},
-			{$set: {password: hashPassword}}
+			{ username },
+			{ $set: { password: hashPassword } }
 		);
 
-		return res.status(200).json({message: 'Password updated successfully.'});
+		return res.status(200).json({ message: 'Password updated successfully.' });
 	} catch (error) {
-		return res.status(500).json({message: 'Something went wrong.'});
+		return res.status(500).json({ message: 'Something went wrong.' });
+	}
+}
+
+async function handleGetOrders(req, res) {
+	try {
+		const { username } = req.body;
+		const data = await User.findOne({ username });
+		// No order
+		if (!data) return res.status(400);
+		res.send(data.order);
+	} catch (error) {
+
 	}
 }
 
@@ -165,4 +177,5 @@ module.exports = {
 	handleFectchCart,
 	handleUpdateQuantity,
 	handleForgetPass,
+	handleGetOrders,
 };

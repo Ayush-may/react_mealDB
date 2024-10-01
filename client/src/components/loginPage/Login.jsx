@@ -58,6 +58,8 @@ const Login = () => {
 				},
 			});
 
+			console.log(response);
+
 			if (response.statusText === "OK") {
 				localStorage.setItem("themeal_username", watch("username"));
 				setAuth(true);

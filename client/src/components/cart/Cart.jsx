@@ -6,7 +6,7 @@ import { clearCartFromDB } from "../../../Redux/features/cart/cartSlice.js";
 
 const Cart = () => {
 	// const tempCarts = useSelector(state => state.cart.cart);
-	const [tempCarts, setTempCarts] = useState(useSelector(state => state.cart.cart));
+	const tempCarts = useSelector(state => state.cart.cart);
 	const [carts, setCarts] = useState([]);
 	const [totalPrice, setPrice] = useState(0);
 	const dispatch = useDispatch();

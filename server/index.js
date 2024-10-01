@@ -12,9 +12,9 @@ const { auth } = require("./middleware/auth");
 const PORT = process.env.PORT || 8001;
 
 var corsOptions = {
- origin: "http://localhost:5173",
- optionsSuccessStatus: 200,
- credentials: true,
+    origin: "http://localhost:5173",
+    optionsSuccessStatus: 200,
+    credentials: true,
 };
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -28,16 +28,15 @@ app.use(express.urlencoded({ extended: true }));
 const mongoUser = encodeURIComponent(process.env.MONGO_USER);
 const mongoPass = encodeURIComponent(process.env.MONGO_PASS);
 
-mongoConnect(`mongodb+srv://${mongoUser}:${mongoPass}@themeal.f86ot.mongodb.net/?retryWrites=true&w=majority&appName=theMeal`).then(() =>
- console.log("mongoDb is connected")
-);
-
-
+mongoConnect(`mongodb+srv://${mongoUser}:${mongoPass}@themeal.f86ot.mongodb.net/?retryWrites=true&w=majority&appName=theMeal`)
+    .then(() =>
+        console.log("mongoDb is connected")
+    );
 
 // auth the user
 app.get("/authuser", auth, (req, res) => {
- console.log('this is running')
- res.status(200).send("OK");
+    console.log('this is running')
+    res.status(200).send("OK");
 });
 
 // user login and sign up
