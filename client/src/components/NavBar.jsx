@@ -49,6 +49,7 @@ const NavBar = () => {
                         <button
                             className="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded"
                             onClick={() => {
+                                localStorage.clear()
                                 // This one deletes the cookies
                                 document.cookie =
                                     "uid =; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";

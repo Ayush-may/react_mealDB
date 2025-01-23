@@ -7,6 +7,12 @@ const AuthProvider = ({ children }) => {
  const [isAuth, setAuth] = useState(false);
 
  useEffect(() => {
+  if (localStorage.getItem("themeal_username")) {
+   setAuth(true);
+  } else {
+   setAuth(false);
+  }
+  return;
   (async () => {
    try {
     const response = await axiosConfig.get("/authuser");
@@ -14,7 +20,6 @@ const AuthProvider = ({ children }) => {
    } catch (error) {
     setAuth(false);
    }
-
    console.log("user logged in ?--> ", isAuth);
   })();
  }, []);

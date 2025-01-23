@@ -9,11 +9,11 @@ import { AuthContext } from "../authProvider/AuthProvider";
 
 const usernameValidations = {
 	required: "username is required",
-	pattern: {
-		value: /^[A-Z][a-zA-Z]*$/,
-		message:
-			"Username must start with a capital letter and contain only letters.",
-	},
+	// pattern: {
+	// 	value: /^[A-Z][a-zA-Z]*$/,
+	// 	message:
+	// 		"Username must start with a capital letter and contain only letters.",
+	// },
 };
 
 const passwordValidations = {
@@ -45,6 +45,7 @@ const Login = () => {
 
 	//  check if user is present or not
 	const { isAuth, setAuth } = useContext(AuthContext);
+	console.log(isAuth)
 	useEffect(() => {
 		if (isAuth) navigate("/themeal");
 	});

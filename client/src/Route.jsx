@@ -31,7 +31,6 @@ const router = createBrowserRouter([
       <>
         <NavBar />
         <Outlet />
-        {/* <FooterBig /> */}
         <Footer />
       </>
     ),
